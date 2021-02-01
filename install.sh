@@ -279,6 +279,7 @@ ini_config()
 # 开始调用
 sys_plugins_install
 do_install_docker
+ini_config
 docker_run
 set_command
 setini
