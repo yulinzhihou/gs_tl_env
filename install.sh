@@ -71,7 +71,7 @@ set_command() {
 docker_run () {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      cd /root/gs_tl_env && docker-compose up -d
+      cd /root/gs_tl_env && . /etc/profile && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz
@@ -81,7 +81,16 @@ docker_run () {
 # 初始化配置
 ini_config()
 {
-  get_char
+    if [ -z "`grep ^SHARE_DIR /etc/profile`" ]; then
+        echo SHARE_DIR="/gs_tl" >> /etc/profile
+    fi
+
+    if [ -z "`grep ^RESTART /etc/profile`" ]; then
+        echo RESTART="always" >> /etc/profile
+    fi
+
+
+#  get_char
   ARG_NUM=$#
   # 修改billing参数
   if [ -e "/etc/profile" ]; then
