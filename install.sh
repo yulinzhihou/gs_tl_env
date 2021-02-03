@@ -96,7 +96,7 @@ ini_config()
   if [ -e "/etc/profile" ]; then
     . /etc/profile
     BILLING_DEFAULT_PORT=21818
-    [ ! -z "`grep ^BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
+    [ -z "`grep ^BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
     read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
@@ -280,9 +280,8 @@ ini_config()
       fi
     fi
   fi
-
+  source /etc/profile
 }
-
 
 ##################################################################
 # 开始调用
