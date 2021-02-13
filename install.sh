@@ -82,11 +82,11 @@ docker_run () {
 ini_config()
 {
     if [ -z "`grep ^SHARE_DIR /etc/profile`" ]; then
-        echo SHARE_DIR="/gs_tl" >> /etc/profile
+        echo 'SHARE_DIR="/gs_tl"' >> /etc/profile
     fi
 
     if [ -z "`grep ^RESTART /etc/profile`" ]; then
-        echo RESTART="always" >> /etc/profile
+        echo 'RESTART="always"' >> /etc/profile
     fi
 
 
@@ -117,7 +117,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^BILLING_PORT /etc/profile`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
-        echo BILLING_PORT="${BILLING_NEW_PORT}" >> /etc/profile
+        echo 'BILLING_PORT="${BILLING_NEW_PORT}"' >> /etc/profile
       elif [ -n "`grep ^BILLING_PORT /etc/profile`" ]; then
         sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" /etc/profile
       fi
@@ -148,7 +148,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^TL_MYSQL_PORT /etc/profile`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
-        echo TL_MYSQL_PORT="${TL_MYSQL_NEW_PORT}" >> /etc/profile
+        echo 'TL_MYSQL_PORT="${TL_MYSQL_NEW_PORT}"' >> /etc/profile
       elif [ -n "`grep ^TL_MYSQL_PORT /etc/profile`" ]; then
         sed -i "s@^TL_MYSQL_PORT.*@TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /etc/profile
       fi
@@ -179,7 +179,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
-         echo LOGIN_PORT="${LOGIN_PORT}" >> /etc/profile
+         echo 'LOGIN_PORT="${LOGIN_PORT}"' >> /etc/profile
       elif [ -n "`grep ^LOGIN_PORT /etc/profile`" ]; then
         sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /etc/profile
       fi
@@ -211,7 +211,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
-        echo SERVER_PORT="${SERVER_PORT}" >> /etc/profile
+        echo 'SERVER_PORT="${SERVER_PORT}"' >> /etc/profile
       elif [ -n "`grep ^SERVER_PORT /etc/profile`" ]; then
         sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /etc/profile
       fi
@@ -242,7 +242,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
-        echo WEB_PORT="${WEB_PORT}" >> /etc/profile
+        echo 'WEB_PORT="${WEB_PORT}"' >> /etc/profile
       elif [ -n "`grep ^WEB_PORT /etc/profile`" ]; then
         sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /etc/profile
       fi
@@ -272,7 +272,7 @@ ini_config()
       done
 
       if [ ! -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
-        echo TL_MYSQL_PASSWORD="${TL_MYSQL_NEW_PASSWORD}" >> /etc/profile
+        echo 'TL_MYSQL_PASSWORD="${TL_MYSQL_NEW_PASSWORD}"' >> /etc/profile
       elif [ -n "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ]; then
         sed -i "s@^TL_MYSQL_PASSWORD.*@TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /etc/profile
       fi
@@ -292,6 +292,7 @@ setini
 ##################################################################
 # 安装完成提示
 . /etc/profile
+#export $(grep -v '^#' ~/.tlgame/gs/.env | xargs -d '\n')
 printf "
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
