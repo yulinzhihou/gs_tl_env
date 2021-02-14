@@ -149,27 +149,21 @@ elif [ "${CentOS_ver}" == '8' ]; then
 else
   sslLibVer=unknown
 fi
-# 加载shell
-get_char() {
-  SAVEDSTTY=`stty -g`
-  stty -echo
-  stty cbreak
-  dd if=/dev/tty bs=1 count=1 2> /dev/null
-  stty -raw
-  stty echo
-  stty $SAVEDSTTY
-}
+
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误: 你必须使用${CEND}"; exit 1; }
 # 系统组件安装
 sys_plugins_install()
 {
   # 安装 wget gcc curl git python
-  [ "${PM}" == 'apt-get' ] && { apt-get -y update; apt-get -y install git vim }
+  [ "${PM}" == 'apt-get' ] && { apt-get -y update; apt-get -y install git vim; }
   [ "${PM}" == 'yum' ] && yum clean all
   ${PM} -y install wget gcc curl python git vim
   [ "${CentOS_ver}" == '8' ] && { yum -y install python36 git vim; sudo alternatives --set python /usr/bin/python3; }
 }
 
 # 下载源码包
-cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git .gs_tl_env && source ~/.gs_tl_env/install.sh
+sys_plugins_install
+git clone https://github.com/yulinzhihou/gs_tl_env.git .gs_tl_env
+chmod -R 777 ~/.gs_tl_env
+exec ~/.gs_tl_env/install.sh
