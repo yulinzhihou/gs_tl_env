@@ -8,16 +8,6 @@
 # 第一步：更新系统组件，安装docker,docker-composer
 # 第二步：下载GS相关命令到系统
 # 第三步：在线下载打包好的镜像或者导入离线版本的镜像
-#!/usr/bin/env bash
-# Author: yulinzhihou <yulinzhihou@gmail.com>
-# Forum:  https://gsgamesahre.com
-# Project: https://github.com/yulinzhihou/gs_tl_env.git
-# Date :  2021-02-12
-# Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
-
-# 第一步：更新系统组件，安装docker,docker-composer
-# 第二步：下载GS相关命令到系统
-# 第三步：在线下载打包好的镜像或者导入离线版本的镜像
 startTime=`date +%s`
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
@@ -207,40 +197,37 @@ set_command() {
 docker_run () {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      cd /root/gs_tl_env && . /etc/profile && docker-compose up -d
+      cd /root/gs_tl_env && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz
     fi
 }
 
-# 初始化配置
-ini_config()
+# 下载环境源码
+download_code()
 {
-    if [ -z "`grep ^SHARE_DIR /etc/profile`" ]; then
-        echo 'SHARE_DIR="/gs_tl"' >> /etc/profile
-    fi
+  cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
+  mv ~/gs_tl_env/include/env.sh /usr/local/bin/env_variable && chmod a+x /usr/local/bin/env_variable
+  export $(grep -v '^#' /usr/local/bin/env_variable | xargs -d '\n')
+}
 
-    if [ -z "`grep ^RESTART /etc/profile`" ]; then
-        echo 'RESTART="always"' >> /etc/profile
-    fi
+sys_plugins_install
+do_install_docker
+download_code
 
-  ARG_NUM=$#
-  # 修改billing参数
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    BILLING_DEFAULT_PORT=21818
-    [ -z "`grep ^BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
-    read -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当【Billing验证端口】为：[${BILLING_PORT}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【Billing验证端口】为：[${BILLING_PORT}]${CEND}"
-    else
-      #
+# 初始化配置
+# 修改billing参数
+while :; do echo
+  [ -z "`grep ^BILLING_PORT /usr/local/bin/env_variable`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
+  read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n'${CEND}"
+      exit;
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
+        read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
         BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
         if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -250,152 +237,143 @@ ini_config()
         fi
       done
 
-      if [ ! -z "`grep ^BILLING_PORT /etc/profile`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
-        echo 'BILLING_PORT="${BILLING_NEW_PORT}"' >> /etc/profile
-      elif [ -n "`grep ^BILLING_PORT /etc/profile`" ]; then
-        sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" /etc/profile
+      if [ ! -z "`grep ^BILLING_PORT /usr/local/bin/env_variable`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
+        echo 'BILLING_PORT="${BILLING_NEW_PORT}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^BILLING_PORT /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" /usr/local/bin/env_variable
       fi
     fi
+    break;
   fi
+done
 
-  # 修改mysql_Port参数
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    TL_MYSQL_DEFAULT_PORT=33061
-    [ -z "`grep ^TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
-    read -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
-    else
+# 修改mysql_Port参数
+while :; do echo
+  [ -z "`grep ^TL_MYSQL_PORT /usr/local/bin/env_variable`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
+  read  -e -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
+  IS_MODIFY=${IS_MODIFY:-'n'}
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
+        read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
         TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
         if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
           echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-          exit 1
         fi
       done
 
-      if [ ! -z "`grep ^TL_MYSQL_PORT /etc/profile`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
-        echo 'TL_MYSQL_PORT="${TL_MYSQL_NEW_PORT}"' >> /etc/profile
-      elif [ -n "`grep ^TL_MYSQL_PORT /etc/profile`" ]; then
-        sed -i "s@^TL_MYSQL_PORT.*@TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /etc/profile
+      if [ ! -z "`grep ^TL_MYSQL_PORT /usr/local/bin/env_variable`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
+        echo 'TL_MYSQL_PORT="${TL_MYSQL_NEW_PORT}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^TL_MYSQL_PORT /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^TL_MYSQL_PORT.*@TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /usr/local/bin/env_variable
       fi
     fi
+    break
   fi
+done
 
-  # 修改login_Port参数
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    LOGIN_DEFAULT_PORT=13580
-    [ -z "`grep ^LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
-    read -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
-    else
+# 修改login_Port参数
+while :; do echo
+  [ -z "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
+  read  -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
+  IS_MODIFY=${IS_MODIFY:-'n'}
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
+        read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
         LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
         if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
           echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-          exit 1
         fi
       done
 
-      if [ ! -z "`grep ^LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
-         echo 'LOGIN_PORT="${LOGIN_PORT}"' >> /etc/profile
-      elif [ -n "`grep ^LOGIN_PORT /etc/profile`" ]; then
-        sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /etc/profile
+      if [ ! -z "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
+         echo 'LOGIN_PORT="${LOGIN_PORT}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /usr/local/bin/env_variable
       fi
     fi
+    break
   fi
+done
 
 
-  # 修改Game_Port参数
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    SERVER_DEFAULT_PORT=15680
-    [ -z "`grep ^SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
-    read -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
-    else
+# 修改Game_Port参数
+while :; do echo
+  [ -z "`grep ^SERVER_PORT /usr/local/bin/env_variable`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
+  read  -e -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
+  IS_MODIFY=${IS_MODIFY:-'n'}
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
+        read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
         SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
         if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
           echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-          exit 1
         fi
       done
 
-      if [ ! -z "`grep ^SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
-        echo 'SERVER_PORT="${SERVER_PORT}"' >> /etc/profile
-      elif [ -n "`grep ^SERVER_PORT /etc/profile`" ]; then
-        sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /etc/profile
+      if [ ! -z "`grep ^SERVER_PORT /usr/local/bin/env_variable`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
+        echo 'SERVER_PORT="${SERVER_PORT}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^SERVER_PORT /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /usr/local/bin/env_variable
       fi
     fi
+    break
   fi
+done
 
-  # 修改WEB_Port参数
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    WEB_DEFAULT_PORT=15680
-    [ -z "`grep ^WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
-    read -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【网站端口】为：[${WEB_PORT}]${CEND}"
-    else
+# 修改WEB_Port参数
+while :; do echo
+  [ -z "`grep ^WEB_PORT /usr/local/bin/env_variable`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
+  read  -e -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
+  IS_MODIFY=${IS_MODIFY:-'n'}
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
+        read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
         WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
         if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} >/dev/null 2>&1 -o ${WEB_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${WEB_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
           echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-          exit 1
         fi
       done
 
-      if [ ! -z "`grep ^WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
-        echo 'WEB_PORT="${WEB_PORT}"' >> /etc/profile
-      elif [ -n "`grep ^WEB_PORT /etc/profile`" ]; then
-        sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /etc/profile
+      if [ ! -z "`grep ^WEB_PORT /usr/local/bin/env_variable`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
+        echo 'WEB_PORT="${WEB_PORT}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^WEB_PORT /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /usr/local/bin/env_variable
       fi
     fi
+    break
   fi
+done
 
-  # 修改数据库密码
-  if [ -e "/etc/profile" ]; then
-    . /etc/profile
-    TL_MYSQL_DEFAULT_PASSWORD=123456
-    [ -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
-    read -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
-    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
-        echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
-    elif [ "${IS_MODIFY}" == 'n' ]; then
-        echo "${CWARNING}当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
-    else
-      while :; do
+# 修改数据库密码
+while :; do echo
+  [ -z "`grep ^TL_MYSQL_PASSWORD /usr/local/bin/env_variable`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
+  read  -e -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
+  IS_MODIFY=${IS_MODIFY:-'n'}
+  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
+  else
+    if [ "${IS_MODIFY}" == 'y' ]; then
+      while :; do echo
         read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
         TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
         if (( ${#TL_MYSQL_NEW_PASSWORD} >= 5 )); then
@@ -405,36 +383,35 @@ ini_config()
         fi
       done
 
-      if [ ! -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
-        echo 'TL_MYSQL_PASSWORD="${TL_MYSQL_NEW_PASSWORD}"' >> /etc/profile
-      elif [ -n "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ]; then
-        sed -i "s@^TL_MYSQL_PASSWORD.*@TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /etc/profile
+      if [ ! -z "`grep ^TL_MYSQL_PASSWORD /usr/local/bin/env_variable`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
+        echo 'TL_MYSQL_PASSWORD="${TL_MYSQL_NEW_PASSWORD}"' >> /usr/local/bin/env_variable
+      elif [ -n "`grep ^TL_MYSQL_PASSWORD /usr/local/bin/env_variable`" ]; then
+        sed -i "s@^TL_MYSQL_PASSWORD.*@TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /usr/local/bin/env_variable
       fi
     fi
+    break
   fi
-}
+done
 
 ##################################################################
 # 开始调用
-sys_plugins_install
-do_install_docker
-ini_config
 docker_run
 set_command
 ##################################################################
 # 安装完成提示
-source /etc/profile
+source /usr/local/bin/env_variable
 printf "
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
 #       \e[44m GS游享网 [https://gsgameshare.com] 专用环境安装成功!\e[0m
-#       1.数据库端口: \t`echo -e [ ! -z ${TL_MYSQL_PORT} ] && ${TL_MYSQL_PORT} || 33061`
-#       2.数据库密码: \t`echo -e [ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 123456`
-#       3.登录网关端口: \t`echo -e [ ! -z ${LOGIN_PORT} ] && ${LOGIN_PORT} || 13580`
-#       4.游戏网关端口: \t`echo -e [ ! -z ${SERVER_PORT} ] && ${SERVER_PORT} || 15680`
-#       5.网站端口: \t`echo -e [ ! -z ${WEB_PORT} ] && ${WEB_PORT} || 58080`
-#       6.验证端口: \t`echo -e [ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 21818`
+#       1.数据库端口: \t`[ ! -z ${TL_MYSQL_PORT} ] && echo ${TL_MYSQL_PORT} || echo 33061`
+#       2.数据库密码: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 123456`
+#       3.登录网关端口: \t`[ ! -z ${LOGIN_PORT} ] && echo ${LOGIN_PORT} || echo 13580`
+#       4.游戏网关端口: \t`[ ! -z ${SERVER_PORT} ] && echo ${SERVER_PORT} || echo 15680`
+#       5.网站端口: \t`[ ! -z ${WEB_PORT} ] && echo ${WEB_PORT} || echo 58080`
+#       6.验证端口: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 21818`
 #       7.技术交流群：\t826717146
+#       8.更多命令请运行 > gs
 #######################################################################
 "
 endTime=`date +%s`
