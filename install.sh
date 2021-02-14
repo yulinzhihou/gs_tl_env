@@ -227,7 +227,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
-        BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
+        BILLING_NEW_PORT={${BILLING_NEW_PORT}:-${BILLING_DEFAULT_PORT}}
         if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
@@ -255,7 +255,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
-        TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
+        TL_MYSQL_NEW_PORT={${TL_MYSQL_NEW_PORT}:-${TL_MYSQL_DEFAULT_PORT}}
         if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
@@ -277,14 +277,13 @@ done
 [ -z "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
 while :; do echo
   read  -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
-
   if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
       echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
   else
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
-        LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
+        LOGIN_NEW_PORT={${LOGIN_NEW_PORT}:-${LOGIN_PORT}}
         if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
@@ -314,7 +313,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
-        SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
+        SERVER_NEW_PORT={${SERVER_NEW_PORT}:-${SERVER_DEFAULT_PORT}}
         if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
@@ -342,7 +341,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
-        WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
+        WEB_NEW_PORT={${WEB_NEW_PORT}:-${WEB_PORT}}
         if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} >/dev/null 2>&1 -o ${WEB_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${WEB_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
         else
@@ -370,7 +369,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
-        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
+        TL_MYSQL_NEW_PASSWORD={${TL_MYSQL_NEW_PASSWORD}:-${TL_MYSQL_PASSWORD}}
         if (( ${#TL_MYSQL_NEW_PASSWORD} >= 5 )); then
           break
         else
