@@ -237,7 +237,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^BILLING_PORT /usr/local/bin/env_variable`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
-        echo 'BILLING_PORT="${BILLING_NEW_PORT}"' >> /usr/local/bin/env_variable
+        echo "BILLING_PORT=${BILLING_NEW_PORT}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^BILLING_PORT /usr/local/bin/env_variable`" ]; then
         sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" /usr/local/bin/env_variable
       fi
@@ -266,7 +266,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^TL_MYSQL_PORT /usr/local/bin/env_variable`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
-        echo 'TL_MYSQL_PORT="${TL_MYSQL_NEW_PORT}"' >> /usr/local/bin/env_variable
+        echo "TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^TL_MYSQL_PORT /usr/local/bin/env_variable`" ]; then
         sed -i "s@^TL_MYSQL_PORT.*@TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /usr/local/bin/env_variable
       fi
@@ -295,7 +295,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
-         echo 'LOGIN_PORT="${LOGIN_PORT}"' >> /usr/local/bin/env_variable
+         echo "LOGIN_PORT=${LOGIN_PORT}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^LOGIN_PORT /usr/local/bin/env_variable`" ]; then
         sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /usr/local/bin/env_variable
       fi
@@ -325,7 +325,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^SERVER_PORT /usr/local/bin/env_variable`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
-        echo 'SERVER_PORT="${SERVER_PORT}"' >> /usr/local/bin/env_variable
+        echo "SERVER_PORT=${SERVER_PORT}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^SERVER_PORT /usr/local/bin/env_variable`" ]; then
         sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /usr/local/bin/env_variable
       fi
@@ -354,7 +354,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^WEB_PORT /usr/local/bin/env_variable`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
-        echo 'WEB_PORT="${WEB_PORT}"' >> /usr/local/bin/env_variable
+        echo "WEB_PORT=${WEB_PORT}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^WEB_PORT /usr/local/bin/env_variable`" ]; then
         sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /usr/local/bin/env_variable
       fi
@@ -383,7 +383,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^TL_MYSQL_PASSWORD /usr/local/bin/env_variable`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
-        echo 'TL_MYSQL_PASSWORD="${TL_MYSQL_NEW_PASSWORD}"' >> /usr/local/bin/env_variable
+        echo "TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}" >> /usr/local/bin/env_variable
       elif [ -n "`grep ^TL_MYSQL_PASSWORD /usr/local/bin/env_variable`" ]; then
         sed -i "s@^TL_MYSQL_PASSWORD.*@TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /usr/local/bin/env_variable
       fi
