@@ -93,63 +93,6 @@ if [ ${CentOS_ver} -lt 6 >/dev/null 2>&1 ] || [ ${Debian_ver} -lt 8 >/dev/null 2
   kill -9 $$
 fi
 
-#command -v gcc > /dev/null 2>&1 || $PM -y install gcc
-#gcc_ver=$(gcc -dumpversion | awk -F. '{print $1}')
-#
-#[ ${gcc_ver} -lt 5 >/dev/null 2>&1 ] && redis_ver=${redis_oldver}
-
-#if uname -m | grep -Eqi "arm|aarch64"; then
-#  armplatform="y"
-#  if uname -m | grep -Eqi "armv7"; then
-#    TARGET_ARCH="armv7"
-#  elif uname -m | grep -Eqi "armv8"; then
-#    TARGET_ARCH="arm64"
-#  elif uname -m | grep -Eqi "aarch64"; then
-#    TARGET_ARCH="aarch64"
-#  else
-#    TARGET_ARCH="unknown"
-#  fi
-#fi
-
-#if [ "$(uname -r | awk -F- '{print $3}' 2>/dev/null)" == "Microsoft" ]; then
-#  Wsl=true
-#fi
-
-#if [ "$(getconf WORD_BIT)" == "32" ] && [ "$(getconf LONG_BIT)" == "64" ]; then
-#  OS_BIT=64
-#  SYS_BIT_j=x64 #jdk
-#  SYS_BIT_a=x86_64 #mariadb
-#  SYS_BIT_b=x86_64 #mariadb
-#  SYS_BIT_c=x86_64 #ZendGuardLoader
-#  SYS_BIT_d=x86-64 #ioncube
-#  [ "${TARGET_ARCH}" == 'aarch64' ] && { SYS_BIT_c=aarch64; SYS_BIT_d=aarch64; }
-#else
-#  OS_BIT=32
-#  SYS_BIT_j=i586
-#  SYS_BIT_a=x86
-#  SYS_BIT_b=i686
-#  SYS_BIT_c=i386
-#  SYS_BIT_d=x86
-#  [ "${TARGET_ARCH}" == 'armv7' ] && { SYS_BIT_c=armhf; SYS_BIT_d=armv7l; }
-#fi
-
-#THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
-
-# Percona binary: https://www.percona.com/doc/percona-server/5.7/installation.html#installing-percona-server-from-a-binary-tarball
-#if [ ${Debian_ver} -lt 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -lt 14 >/dev/null 2>&1 ]; then
-#  sslLibVer=ssl100
-#elif [[ "${CentOS_ver}" =~ ^[6-7]$ ]] && [ "$(lsb_release -is)" != 'Fedora' ]; then
-#  sslLibVer=ssl101
-#elif [ ${Debian_ver} -ge 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -ge 14 >/dev/null 2>&1 ]; then
-#  sslLibVer=ssl102
-#elif [ ${Fedora_ver} -ge 27 >/dev/null 2>&1 ]; then
-#  sslLibVer=ssl102
-#elif [ "${CentOS_ver}" == '8' ]; then
-#  sslLibVer=ssl1:111
-#else
-#  sslLibVer=unknown
-#fi
-
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误: 你必须使用${CEND}"; exit 1; }
 # 系统组件安装
@@ -211,49 +154,18 @@ download_code()
     cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
   fi
 
-  if [ -z "`grep ^export SHARED_DIR /etc/profile`" ]; then
-    echo "export SHARED_DIR=/gs_tl" >> /etc/profile
-  fi
+  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
+  params_value=('/gs_tl' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/gs_tl_env' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
 
-  if [ -z "`grep ^export RESTART /etc/profile`" ]; then
-    echo "export RESTART='always'" >> /etc/profile
-  fi
+  for i in $(seq 0 1 10)
+  do
+      index=$i
 
-  if [ -z "`grep ^export ILLING_DEFAULT_PORT /etc/profile`" ]; then
-    echo "export BILLING_DEFAULT_PORT=21818" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
-    echo "export TL_MYSQL_DEFAULT_PORT=33601" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export LOGIN_DEFAULT_PORT /etc/profile`" ]; then
-    echo "export LOGIN_DEFAULT_PORT=13580" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export SERVER_DEFAULT_PORT /etc/profile`" ]; then
-    echo "export SERVER_DEFAULT_PORT=15680" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export WEB_DEFAULT_PORT /etc/profile`" ]; then
-    echo "export WEB_DEFAULT_PORT=58080" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
-    echo "export TL_MYSQL_DEFAULT_PASSWORD=123456" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export GS_PROJECT /etc/profile`" ]; then
-    echo "export GS_PROJECT=/root/gs_tl_env" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export GS_PROJECT_URL_1 /etc/profile`" ]; then
-    echo "export GS_PROJECT='https://github.com/yulinzhihou/gs_tl_env.git'" >> /etc/profile
-  fi
-
-  if [ -z "`grep ^export GS_PROJECT_URL_2 /etc/profile`" ]; then
-    echo "export GS_PROJECT='https://gitee.com/yulinzhihou/gs_tl_env.git'" >> /etc/profile
-  fi
+      tmp='grep '${params[index]}' /etc/profile';
+      if [ -z "`${tmp}`" ]; then
+          echo "export ${params[index]}=${params_value[index]}" >> /etc/profile
+      fi
+  done
 
 }
 
@@ -261,184 +173,58 @@ sys_plugins_install
 do_install_docker
 download_code
 # 初始化配置
-# 修改billing参数
-source /etc/profile
-[ -z "`grep ^export BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
-while :; do echo
-  read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
-        BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
-        if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-          break
+param1=('BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD')
+param2=('BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD')
+param3=('BILLING验证端口' '登录端口' 'mysql端口' '游戏端口' '网站端口' '数据库密码')
+param4=('BILLING_NEW_PORT' 'TL_MYSQL_NEW_PORT' 'SERVER_NEW_PORT' 'WEB_NEW_PORT' 'TL_MYSQL_NEW_PASSWORD')
+
+ for i in $(seq 0 1 5)
+ do
+    index=$i
+    source /etc/profile;
+    param11=${param1[index]};
+    param111=${!param1[index]};
+    param221=${!param2[index]};
+    param31=${param3[index]};
+    param41=${param4[index]};
+    param441=${!param4[index]};
+    str='grep '${param1[index]}' /etc/profile';
+    [ -z "`${str}`" ] && param11=${param221} || param11=${param111};
+    while :; do echo
+        read -e -p "当前【${param31}】为：${CBLUE}[${param111}]${CEND}，是否需要修改【${param31}】 [y/n](默认: n): " IS_MODIFY
+        IS_MODIFY=${IS_MODIFY:-'n'}
+        if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+            echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
         else
-          echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+            if [ "${IS_MODIFY}" == 'y' ]; then
+                while :; do echo
+                    read -p "请输入【${param31}】：(默认: ${param221}): " param41
+                    param41=${param41:-${param221}}
+                    if ((index==5)); then
+                        if (( ${#param41} >= 5 )); then
+                            break;
+                        else
+                            echo "${CWARNING}密码最少要6个字符! ${CEND}"
+                        fi
+                    else
+                        if [ ${param4[index]} == ${param221} >/dev/null 2>&1 -o ${param41} -gt 1024 >/dev/null 2>&1 -a ${param41} -lt 65535 >/dev/null 2>&1 ]; then
+                            break;
+                        else
+                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                        fi
+                    fi
+                done
+
+                str1='grep '${param1[index]}' /etc/profile'
+                if [ -z "`${str1}`" -a "${param441}" != "${param221}" ]; then
+                    echo "export ${param1[index]}=${param41}" >> /etc/profile
+                elif [ -n "`${str1}`" ]; then
+                    sed -i "s@export ${param1[index]}.*@export ${param1[index]}=${param41}@" /etc/profile
+                fi
+            fi
+            break;
         fi
-      done
-
-      if [ -z "`grep ^export BILLING_PORT /etc/profile`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
-        echo "export BILLING_PORT=${BILLING_NEW_PORT}" >> /etc/profile
-      elif [ -n "`grep ^export BILLING_PORT /etc/profile`" ]; then
-        sed -i "s@^export BILLING_PORT.*@export BILLING_PORT=${BILLING_NEW_PORT}@" /etc/profile
-      fi
-    fi
-    break;
-  fi
-done
-
-# 修改mysql_Port参数
-source /etc/profile
-[ -z "`grep ^export TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
-while :; do echo
-  read  -e -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
-        TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
-        if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-          break
-        else
-          echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-        fi
-      done
-
-      if [ -z "`grep ^export TL_MYSQL_PORT /etc/profile`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
-        echo "export TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}" >> /etc/profile
-      elif [ -n "`grep ^export TL_MYSQL_PORT /etc/profile`" ]; then
-        sed -i "s@^export TL_MYSQL_PORT.*@export TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /etc/profile
-      fi
-    fi
-    break
-  fi
-done
-
-# 修改login_Port参数
-source /etc/profile
-[ -z "`grep ^export LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
-while :; do echo
-  read  -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
-        LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
-        if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-          break
-        else
-          echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-        fi
-      done
-
-      if [ -z "`grep ^export LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
-         echo "export LOGIN_PORT=${LOGIN_NEW_PORT}" >> /etc/profile
-      elif [ -n "`grep ^export LOGIN_PORT /etc/profile`" ]; then
-        sed -i "s@^export LOGIN_PORT.*@export LOGIN_PORT=${LOGIN_NEW_PORT}@" /etc/profile
-      fi
-    fi
-    break
-  fi
-done
-
-# 修改Game_Port参数
-source /etc/profile
-[ -z "`grep ^export SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
-while :; do echo
-  read  -e -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
-        SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
-        if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-          break
-        else
-          echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-        fi
-      done
-
-      if [ -z "`grep ^export SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
-        echo "export SERVER_PORT=${SERVER_NEW_PORT}" >> /etc/profile
-      elif [ -n "`grep ^export SERVER_PORT /etc/profile`" ]; then
-        sed -i "s@^export SERVER_PORT.*@export SERVER_PORT=${SERVER_NEW_PORT}@" /etc/profile
-      fi
-    fi
-    break
-  fi
-done
-
-# 修改WEB_Port参数
-source /etc/profile
-[ -z "`grep ^export WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
-while :; do echo
-  read  -e -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
-        WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
-        if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} >/dev/null 2>&1 -o ${WEB_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${WEB_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
-          break
-        else
-          echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-        fi
-      done
-
-      if [ -z "`grep ^export WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
-        echo "export WEB_PORT=${WEB_NEW_PORT}" >> /etc/profile
-      elif [ -n "`grep ^export WEB_PORT /etc/profile`" ]; then
-        sed -i "s@^export WEB_PORT.*@export WEB_PORT=${WEB_NEW_PORT}@" /etc/profile
-      fi
-    fi
-    break
-  fi
-done
-
-# 修改数据库密码
-source /etc/profile
-[ -z "`grep ^export TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
-while :; do echo
-  read  -e -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
-  IS_MODIFY=${IS_MODIFY:-'n'}
-  if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
-  else
-    if [ "${IS_MODIFY}" == 'y' ]; then
-      while :; do echo
-        read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
-        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}} | base64
-        if (( ${#TL_MYSQL_NEW_PASSWORD} >= 5 )); then
-          break
-        else
-          echo "${CWARNING}密码最少要6个字符! ${CEND}"
-        fi
-      done
-
-      if [ -z "`grep ^export TL_MYSQL_PASSWORD /etc/profile`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
-        echo "export TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}" >> /etc/profile
-      elif [ -n "`grep ^export TL_MYSQL_PASSWORD /etc/profile`" ]; then
-        sed -i "s@^export TL_MYSQL_PASSWORD.*@export TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /etc/profile
-      fi
-    fi
-    break
-  fi
+    done
 done
 
 ##################################################################
