@@ -295,7 +295,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
-         echo "LOGIN_PORT=${LOGIN_PORT}" >> /etc/profile
+         echo "LOGIN_PORT=${LOGIN_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^LOGIN_PORT /etc/profile`" ]; then
         sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /etc/profile
       fi
@@ -325,7 +325,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
-        echo "SERVER_PORT=${SERVER_PORT}" >> /etc/profile
+        echo "SERVER_PORT=${SERVER_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^SERVER_PORT /etc/profile`" ]; then
         sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /etc/profile
       fi
@@ -354,7 +354,7 @@ while :; do echo
       done
 
       if [ ! -z "`grep ^WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
-        echo "WEB_PORT=${WEB_PORT}" >> /etc/profile
+        echo "WEB_PORT=${WEB_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^WEB_PORT /etc/profile`" ]; then
         sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /etc/profile
       fi
