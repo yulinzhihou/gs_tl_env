@@ -233,7 +233,7 @@ ini_config()
     [ -z "`grep ^BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
     read -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当【Billing验证端口】为：[${BILLING_PORT}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【Billing验证端口】为：[${BILLING_PORT}]${CEND}"
@@ -265,7 +265,7 @@ ini_config()
     [ -z "`grep ^TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
     read -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
@@ -296,7 +296,7 @@ ini_config()
     [ -z "`grep ^LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
     read -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
@@ -328,7 +328,7 @@ ini_config()
     [ -z "`grep ^SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
     read -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
@@ -359,7 +359,7 @@ ini_config()
     [ -z "`grep ^WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
     read -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【网站端口】为：[${WEB_PORT}]${CEND}"
@@ -390,7 +390,7 @@ ini_config()
     [ -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
     read -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
-    if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+    if [ ! ${IS_MODIFY} =~ ^[y,n]$ ]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
     elif [ "${IS_MODIFY}" == 'n' ]; then
         echo "${CWARNING}当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
@@ -412,7 +412,6 @@ ini_config()
       fi
     fi
   fi
-  source /etc/profile
 }
 
 ##################################################################
@@ -422,11 +421,9 @@ do_install_docker
 ini_config
 docker_run
 set_command
-setini
 ##################################################################
 # 安装完成提示
-. /etc/profile
-#export $(grep -v '^#' ~/.tlgame/gs/.env | xargs -d '\n')
+source /etc/profile
 printf "
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
@@ -437,7 +434,7 @@ printf "
 #       4.游戏网关端口: \t`echo -e [ ! -z ${SERVER_PORT} ] && ${SERVER_PORT} || 15680`
 #       5.网站端口: \t`echo -e [ ! -z ${WEB_PORT} ] && ${WEB_PORT} || 58080`
 #       6.验证端口: \t`echo -e [ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 21818`
-#       技术交流群：                        826717146
+#       7.技术交流群：\t826717146
 #######################################################################
 "
 endTime=`date +%s`
