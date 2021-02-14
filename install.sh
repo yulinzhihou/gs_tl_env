@@ -207,21 +207,31 @@ docker_run () {
 # 下载环境源码
 download_code()
 {
-  if [ ! -e "~/gs_tl_env" ]; then
+  if [ ! -d "/root/gs_tl_env" ]; then
     cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
   fi
 
   if [ ! -z "`grep ^BILLING_DEFAULT_PORT /etc/profile`" ]; then
     echo "BILLING_DEFAULT_PORT=21818" >> /etc/profile
-  elif [ ! -z "`grep ^TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
+  fi
+
+  if [ ! -z "`grep ^TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
     echo "TL_MYSQL_DEFAULT_PORT=33601" >> /etc/profile
-  elif [ ! -z "`grep ^LOGIN_DEFAULT_PORT /etc/profile`" ]; then
+  fi
+
+  if [ ! -z "`grep ^LOGIN_DEFAULT_PORT /etc/profile`" ]; then
     echo "LOGIN_DEFAULT_PORT=13580" >> /etc/profile
-  elif [ ! -z "`grep ^SERVER_DEFAULT_PORT /etc/profile`" ]; then
+  fi
+
+  if [ ! -z "`grep ^SERVER_DEFAULT_PORT /etc/profile`" ]; then
     echo "SERVER_DEFAULT_PORT=15680" >> /etc/profile
-  elif [ ! -z "`grep ^WEB_DEFAULT_PORT /etc/profile`" ]; then
+  fi
+
+  if [ ! -z "`grep ^WEB_DEFAULT_PORT /etc/profile`" ]; then
     echo "WEB_DEFAULT_PORT=58080" >> /etc/profile
-  elif [ ! -z "`grep ^TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
+  fi
+
+  if [ ! -z "`grep ^TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
     echo "TL_MYSQL_DEFAULT_PASSWORD=123456" >> /etc/profile
   fi
 }
