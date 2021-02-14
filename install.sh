@@ -211,27 +211,27 @@ download_code()
     cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
   fi
 
-  if [ ! -z "`grep ^BILLING_DEFAULT_PORT /etc/profile`" ]; then
+  if [ -z "`grep ^BILLING_DEFAULT_PORT /etc/profile`" ]; then
     echo "BILLING_DEFAULT_PORT=21818" >> /etc/profile
   fi
 
-  if [ ! -z "`grep ^TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
+  if [ -z "`grep ^TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
     echo "TL_MYSQL_DEFAULT_PORT=33601" >> /etc/profile
   fi
 
-  if [ ! -z "`grep ^LOGIN_DEFAULT_PORT /etc/profile`" ]; then
+  if [ -z "`grep ^LOGIN_DEFAULT_PORT /etc/profile`" ]; then
     echo "LOGIN_DEFAULT_PORT=13580" >> /etc/profile
   fi
 
-  if [ ! -z "`grep ^SERVER_DEFAULT_PORT /etc/profile`" ]; then
+  if [ -z "`grep ^SERVER_DEFAULT_PORT /etc/profile`" ]; then
     echo "SERVER_DEFAULT_PORT=15680" >> /etc/profile
   fi
 
-  if [ ! -z "`grep ^WEB_DEFAULT_PORT /etc/profile`" ]; then
+  if [ -z "`grep ^WEB_DEFAULT_PORT /etc/profile`" ]; then
     echo "WEB_DEFAULT_PORT=58080" >> /etc/profile
   fi
 
-  if [ ! -z "`grep ^TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
+  if [ -z "`grep ^TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
     echo "TL_MYSQL_DEFAULT_PASSWORD=123456" >> /etc/profile
   fi
 }
@@ -260,7 +260,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^BILLING_PORT /etc/profile`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
+      if [ -z "`grep ^BILLING_PORT /etc/profile`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
         echo "BILLING_PORT=${BILLING_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^BILLING_PORT /etc/profile`" ]; then
         sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" /etc/profile
@@ -290,7 +290,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^TL_MYSQL_PORT /etc/profile`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
+      if [ -z "`grep ^TL_MYSQL_PORT /etc/profile`" -a "${TL_MYSQL_NEW_PORT}" != "${TL_MYSQL_DEFAULT_PORT}" ]; then
         echo "TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^TL_MYSQL_PORT /etc/profile`" ]; then
         sed -i "s@^TL_MYSQL_PORT.*@TL_MYSQL_PORT=${TL_MYSQL_NEW_PORT}@" /etc/profile
@@ -320,7 +320,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
+      if [ -z "`grep ^LOGIN_PORT /etc/profile`" -a "${LOGIN_NEW_PORT}" != "${LOGIN_DEFAULT_PORT}" ]; then
          echo "LOGIN_PORT=${LOGIN_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^LOGIN_PORT /etc/profile`" ]; then
         sed -i "s@^LOGIN_PORT.*@LOGIN_PORT=${LOGIN_NEW_PORT}@" /etc/profile
@@ -350,7 +350,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
+      if [ -z "`grep ^SERVER_PORT /etc/profile`" -a "${SERVER_NEW_PORT}" != "${SERVER_DEFAULT_PORT}" ]; then
         echo "SERVER_PORT=${SERVER_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^SERVER_PORT /etc/profile`" ]; then
         sed -i "s@^SERVER_PORT.*@SERVER_PORT=${SERVER_NEW_PORT}@" /etc/profile
@@ -380,7 +380,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
+      if [ -z "`grep ^WEB_PORT /etc/profile`" -a "${WEB_NEW_PORT}" != "${WEB_DEFAULT_PORT}" ]; then
         echo "WEB_PORT=${WEB_NEW_PORT}" >> /etc/profile
       elif [ -n "`grep ^WEB_PORT /etc/profile`" ]; then
         sed -i "s@^WEB_PORT.*@WEB_PORT=${WEB_NEW_PORT}@" /etc/profile
@@ -410,7 +410,7 @@ while :; do echo
         fi
       done
 
-      if [ ! -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
+      if [ -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" -a "${TL_MYSQL_NEW_PASSWORD}" != "${TL_MYSQL_DEFAULT_PASSWORD}" ]; then
         echo "TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}" >> /etc/profile
       elif [ -n "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ]; then
         sed -i "s@^TL_MYSQL_PASSWORD.*@TL_MYSQL_PASSWORD=${TL_MYSQL_NEW_PASSWORD}@" /etc/profile
