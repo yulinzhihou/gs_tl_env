@@ -242,6 +242,19 @@ download_code()
   if [ -z "`grep ^export TL_MYSQL_DEFAULT_PASSWORD /etc/profile`" ]; then
     echo "export TL_MYSQL_DEFAULT_PASSWORD=123456" >> /etc/profile
   fi
+
+  if [ -z "`grep ^export GS_PROJECT /etc/profile`" ]; then
+    echo "export GS_PROJECT=/root/gs_tl_env" >> /etc/profile
+  fi
+
+  if [ -z "`grep ^export GS_PROJECT_URL_1 /etc/profile`" ]; then
+    echo "export GS_PROJECT='https://github.com/yulinzhihou/gs_tl_env.git'" >> /etc/profile
+  fi
+
+  if [ -z "`grep ^export GS_PROJECT_URL_2 /etc/profile`" ]; then
+    echo "export GS_PROJECT='https://gitee.com/yulinzhihou/gs_tl_env.git'" >> /etc/profile
+  fi
+
 }
 
 sys_plugins_install
@@ -410,7 +423,7 @@ while :; do echo
     if [ "${IS_MODIFY}" == 'y' ]; then
       while :; do echo
         read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
-        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
+        TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}} | base64
         if (( ${#TL_MYSQL_NEW_PASSWORD} >= 5 )); then
           break
         else
