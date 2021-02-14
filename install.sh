@@ -13,7 +13,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 printf "
 #######################################################################
-#       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 16+ Debian 8+       #
+#       GS_TLBB_Env 支持： CentOS/RedHat 7+  Ubuntu 16+ Debian 8+       #
 #       更多天龙网游单机版本请访问：       https://gsgamesahre.com    #
 #       技术交流群：                       826717146                  #
 #######################################################################
@@ -93,10 +93,10 @@ if [ ${CentOS_ver} -lt 6 >/dev/null 2>&1 ] || [ ${Debian_ver} -lt 8 >/dev/null 2
   kill -9 $$
 fi
 
-command -v gcc > /dev/null 2>&1 || $PM -y install gcc
-gcc_ver=$(gcc -dumpversion | awk -F. '{print $1}')
-
-[ ${gcc_ver} -lt 5 >/dev/null 2>&1 ] && redis_ver=${redis_oldver}
+#command -v gcc > /dev/null 2>&1 || $PM -y install gcc
+#gcc_ver=$(gcc -dumpversion | awk -F. '{print $1}')
+#
+#[ ${gcc_ver} -lt 5 >/dev/null 2>&1 ] && redis_ver=${redis_oldver}
 
 #if uname -m | grep -Eqi "arm|aarch64"; then
 #  armplatform="y"
@@ -133,22 +133,22 @@ gcc_ver=$(gcc -dumpversion | awk -F. '{print $1}')
 #  [ "${TARGET_ARCH}" == 'armv7' ] && { SYS_BIT_c=armhf; SYS_BIT_d=armv7l; }
 #fi
 
-THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
+#THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
 
 # Percona binary: https://www.percona.com/doc/percona-server/5.7/installation.html#installing-percona-server-from-a-binary-tarball
-if [ ${Debian_ver} -lt 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -lt 14 >/dev/null 2>&1 ]; then
-  sslLibVer=ssl100
-elif [[ "${CentOS_ver}" =~ ^[6-7]$ ]] && [ "$(lsb_release -is)" != 'Fedora' ]; then
-  sslLibVer=ssl101
-elif [ ${Debian_ver} -ge 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -ge 14 >/dev/null 2>&1 ]; then
-  sslLibVer=ssl102
-elif [ ${Fedora_ver} -ge 27 >/dev/null 2>&1 ]; then
-  sslLibVer=ssl102
-elif [ "${CentOS_ver}" == '8' ]; then
-  sslLibVer=ssl1:111
-else
-  sslLibVer=unknown
-fi
+#if [ ${Debian_ver} -lt 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -lt 14 >/dev/null 2>&1 ]; then
+#  sslLibVer=ssl100
+#elif [[ "${CentOS_ver}" =~ ^[6-7]$ ]] && [ "$(lsb_release -is)" != 'Fedora' ]; then
+#  sslLibVer=ssl101
+#elif [ ${Debian_ver} -ge 9 >/dev/null 2>&1 ] || [ ${Ubuntu_ver} -ge 14 >/dev/null 2>&1 ]; then
+#  sslLibVer=ssl102
+#elif [ ${Fedora_ver} -ge 27 >/dev/null 2>&1 ]; then
+#  sslLibVer=ssl102
+#elif [ "${CentOS_ver}" == '8' ]; then
+#  sslLibVer=ssl1:111
+#else
+#  sslLibVer=unknown
+#fi
 
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误: 你必须使用${CEND}"; exit 1; }
