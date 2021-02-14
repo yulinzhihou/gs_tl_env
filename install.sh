@@ -207,9 +207,10 @@ docker_run () {
 # 下载环境源码
 download_code()
 {
-  cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
-#  \cp -rf  ~/gs_tl_env/include/env.sh /usr/local/bin/env_variable && chmod a+x /usr/local/bin/env_variable
-#  export $(grep -v '^#' /usr/local/bin/env_variable | xargs -d '\n')
+  if [ ! -e "~/gs_tl_env" ]; then
+    cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
+  fi
+
   if [ ! -z "`grep ^BILLING_DEFAULT_PORT /etc/profile`" ]; then
     echo "BILLING_DEFAULT_PORT=21818" >> /etc/profile
   elif [ ! -z "`grep ^TL_MYSQL_DEFAULT_PORT /etc/profile`" ]; then
