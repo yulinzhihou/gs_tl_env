@@ -19,11 +19,11 @@ printf "
 #######################################################################
 "
 # 颜色代码
-. ./include/color.sh
+. `pwd`/include/color.sh
 # 检测系统版本
-. ./include/check_os.sh
+. `pwd`/include/check_os.sh
 # 加载shell
-. ./include/get_char.sh
+. `pwd`/include/get_char.sh
 # 检测是不是root用户。不是则退出
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误: 你必须使用${CEND}"; exit 1; }
 # 系统组件安装
