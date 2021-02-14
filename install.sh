@@ -197,7 +197,7 @@ set_command() {
 docker_run () {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      cd /root/gs_tl_env && docker-compose up -d
+      source /etc/profile && cd /root/gs_tl_env && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz
@@ -209,6 +209,14 @@ download_code()
 {
   if [ ! -d "/root/gs_tl_env" ]; then
     cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
+  fi
+
+  if [ -z "`grep ^SHARED_DIR /etc/profile`" ]; then
+    echo "SHARED_DIR=/gs_tl" >> /etc/profile
+  fi
+
+  if [ -z "`grep ^RESTART /etc/profile`" ]; then
+    echo "RESTART='always'" >> /etc/profile
   fi
 
   if [ -z "`grep ^BILLING_DEFAULT_PORT /etc/profile`" ]; then
