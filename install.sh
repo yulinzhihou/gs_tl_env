@@ -231,7 +231,7 @@ ini_config()
     . /etc/profile
     BILLING_DEFAULT_PORT=21818
     [ -z "`grep ^BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
-    read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当【Billing验证端口】为：[${BILLING_PORT}]${CEND}"
@@ -240,7 +240,7 @@ ini_config()
     else
       #
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -e -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
+        [ ${ARG_NUM} == 0 ] && read -p "请输入【Billing验证端口】：(默认: ${BILLING_DEFAULT_PORT}): " BILLING_NEW_PORT
         BILLING_NEW_PORT=${BILLING_NEW_PORT:-${BILLING_DEFAULT_PORT}}
         if [ ${BILLING_NEW_PORT} == ${BILLING_DEFAULT_PORT} >/dev/null 2>&1 -o ${BILLING_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${BILLING_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -263,7 +263,7 @@ ini_config()
     . /etc/profile
     TL_MYSQL_DEFAULT_PORT=33061
     [ -z "`grep ^TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
-    read -e -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
@@ -271,7 +271,7 @@ ini_config()
         echo "${CWARNING}当前【mysql端口】为：[${TL_MYSQL_PORT}]${CEND}"
     else
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -e -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
+        [ ${ARG_NUM} == 0 ] && read -p "请输入【mysql端口】：(默认: ${TL_MYSQL_DEFAULT_PORT}): " TL_MYSQL_NEW_PORT
         TL_MYSQL_NEW_PORT=${TL_MYSQL_NEW_PORT:-${TL_MYSQL_DEFAULT_PORT}}
         if [ ${TL_MYSQL_NEW_PORT} -eq ${TL_MYSQL_DEFAULT_PORT} >/dev/null 2>&1 -o ${TL_MYSQL_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${TL_MYSQL_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -294,7 +294,7 @@ ini_config()
     . /etc/profile
     LOGIN_DEFAULT_PORT=13580
     [ -z "`grep ^LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
-    read -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
@@ -302,7 +302,7 @@ ini_config()
         echo "${CWARNING}当前【登录端口】为：[${LOGIN_PORT}]${CEND}"
     else
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -e -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
+        [ ${ARG_NUM} == 0 ] && read -p "请输入【登录端口】：(默认: ${LOGIN_DEFAULT_PORT}): " LOGIN_NEW_PORT
         LOGIN_NEW_PORT=${LOGIN_NEW_PORT:-${LOGIN_PORT}}
         if [ ${LOGIN_NEW_PORT} -eq ${LOGIN_DEFAULT_PORT} >/dev/null 2>&1 -o ${LOGIN_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${LOGIN_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -326,7 +326,7 @@ ini_config()
     . /etc/profile
     SERVER_DEFAULT_PORT=15680
     [ -z "`grep ^SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
-    read -e -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
@@ -334,7 +334,7 @@ ini_config()
         echo "${CWARNING}当前【游戏端口】为：[${SERVER_PORT}]${CEND}"
     else
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -e -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
+        [ ${ARG_NUM} == 0 ] && read -p "请输入【游戏端口】：(默认: ${SERVER_DEFAULT_PORT}): " SERVER_NEW_PORT
         SERVER_NEW_PORT=${SERVER_NEW_PORT:-${SERVER_DEFAULT_PORT}}
         if [ ${SERVER_NEW_PORT} -eq ${SERVER_DEFAULT_PORT} >/dev/null 2>&1 -o ${SERVER_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${SERVER_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -357,7 +357,7 @@ ini_config()
     . /etc/profile
     WEB_DEFAULT_PORT=15680
     [ -z "`grep ^WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
-    read -e -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【网站端口】为：[${WEB_PORT}]${CEND}"
@@ -365,7 +365,7 @@ ini_config()
         echo "${CWARNING}当前【网站端口】为：[${WEB_PORT}]${CEND}"
     else
       while :; do echo
-        [ ${ARG_NUM} == 0 ] && read -e -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
+        [ ${ARG_NUM} == 0 ] && read -p "请输入【网站端口】：(默认: ${WEB_DEFAULT_PORT}): " WEB_NEW_PORT
         WEB_NEW_PORT=${WEB_NEW_PORT:-${WEB_PORT}}
         if [ ${WEB_NEW_PORT} -eq ${WEB_DEFAULT_PORT} >/dev/null 2>&1 -o ${WEB_NEW_PORT} -gt 1024 >/dev/null 2>&1 -a ${WEB_NEW_PORT} -lt 65535 >/dev/null 2>&1 ]; then
           break
@@ -388,7 +388,7 @@ ini_config()
     . /etc/profile
     TL_MYSQL_DEFAULT_PASSWORD=123456
     [ -z "`grep ^TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
-    read -e -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
+    read -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n',当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
@@ -396,7 +396,7 @@ ini_config()
         echo "${CWARNING}当前【数据库密码】为：[${TL_MYSQL_PASSWORD}]${CEND}"
     else
       while :; do
-        read -e -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
+        read -p "请输入【数据库密码】(默认: ${TL_MYSQL_DEFAULT_PASSWORD}): " TL_MYSQL_NEW_PASSWORD
         TL_MYSQL_NEW_PASSWORD=${TL_MYSQL_NEW_PASSWORD:-${TL_MYSQL_PASSWORD}}
         if (( ${#TL_MYSQL_NEW_PASSWORD} >= 5 )); then
           break
@@ -431,13 +431,12 @@ printf "
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
 #       \e[44m GS游享网 [https://gsgameshare.com] 专用环境安装成功!\e[0m
-#       1.数据库端口: `[ ! -z ${TL_MYSQL_PORT} ] && ${TL_MYSQL_PORT} || 33061`
-#       2.数据库密码: `[ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 123456`
-#       3.登录网关端口: `[ ! -z ${LOGIN_PORT} ] && ${LOGIN_PORT} || 13580`
-#       4.游戏网关端口: `[ ! -z ${SERVER_PORT} ] && ${SERVER_PORT} || 15680`
-#       5.网站端口: `[ ! -z ${WEB_PORT} ] && ${WEB_PORT} || 58080`
-#       6.Billing端口: `[ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 21818`
-#       更多天龙网游单机版本请访问：          https://gsgamesahre.com
+#       1.数据库端口: \t`echo -e [ ! -z ${TL_MYSQL_PORT} ] && ${TL_MYSQL_PORT} || 33061`
+#       2.数据库密码: \t`echo -e [ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 123456`
+#       3.登录网关端口: \t`echo -e [ ! -z ${LOGIN_PORT} ] && ${LOGIN_PORT} || 13580`
+#       4.游戏网关端口: \t`echo -e [ ! -z ${SERVER_PORT} ] && ${SERVER_PORT} || 15680`
+#       5.网站端口: \t`echo -e [ ! -z ${WEB_PORT} ] && ${WEB_PORT} || 58080`
+#       6.验证端口: \t`echo -e [ ! -z ${TL_MYSQL_PASSWORD} ] && ${TL_MYSQL_PASSWORD} || 21818`
 #       技术交流群：                        826717146
 #######################################################################
 "
