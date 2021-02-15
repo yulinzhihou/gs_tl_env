@@ -169,6 +169,28 @@ download_code()
 
 }
 
+# 数据备份
+data_backup()
+{
+    #备份数据库
+    crontabCount=`crontab -l | grep docker exec -it gs_tlmysql_1 | grep -v grep |wc -l`
+    if [ $crontabCount = 0 ];then
+        (echo "0 */1 * * * sh docker exec -it gs_tlmysql_1 /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
+    fi
+
+    docker cp /root/gs_tl_env/include/tlmysql_backup.sh gs_server_1:/
+    docker exec -it gs_tlmysql_1 /bin/bash -c "chmod -R 777 /tlmysql_backup.sh"
+
+    #备份服务端
+    crontabCount=`crontab -l | grep tlbbserver | grep -v grep |wc -l`
+    if [ $crontabCount = 0 ];then
+        (echo "0 */1 * * * sh  > /dev/null 2>&1 &"; crontab -l) | crontab
+    fi
+}
+
+
+
+
 sys_plugins_install
 do_install_docker
 download_code
