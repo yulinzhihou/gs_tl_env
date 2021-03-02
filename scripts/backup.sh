@@ -21,7 +21,7 @@ if [[ $? -eq 0 ]]; then
      echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\tweb-${FILENAME}.sql\t备份成功">>${FILEPATH}${LOG_FILE}
 else
     echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\ttlbbdb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
-     echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\tweb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
+    echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\tweb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
 fi
 #备份服务端
 tar zcf tlbb-${FILENAME}.tar.gz /tlgame/tlbb
