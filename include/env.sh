@@ -1,5 +1,5 @@
 #
-SHARE_DIR="/gs_tl"
+SHARE_DIR="/tlgame"
 #
 RESTART="always"
 #

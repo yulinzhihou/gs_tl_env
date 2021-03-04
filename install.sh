@@ -188,9 +188,6 @@ data_backup()
     fi
 }
 
-
-
-
 sys_plugins_install
 do_install_docker
 download_code

@@ -10,9 +10,9 @@
 tar zxf /root/gs_tl_env/config/ini.tar.gz -C /root/gs_tl_env/config/
 tar zxf /root/gs_tl_env/config/billing.tar.gz -C /root/gs_tl_env/config/
 if [ ! -d "/gs_tl/billing/" ]; then
-    mkdir -p /gs_tl/billing/ && chown -R root:root /gs_tl/billing && chmod -R 777 /gs_tl
+    mkdir -p /tlgame/billing/ && chown -R root:root /tlgame/billing && chmod -R 777 /tlgame
 fi
-tar zxf /root/gs_tl_env/config//billing.tar.gz -C /gs_tl/billing/
+tar zxf /root/gs_tl_env/config//billing.tar.gz -C /tlgame/billing/
 
 # 游戏配置文件
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
@@ -49,12 +49,12 @@ if [ "${SERVER_PORT}" != "15680" ]; then
 fi
 
 #复制到已经修改好的文件到指定容器
-\cp -rf /root/gs_tl_env/config/*.ini /gs_tl/tlbb/Server/Config/
-\cp -rf /root/gs_tl_env/config/config.json /gs_tl/billing/
+\cp -rf /root/gs_tl_env/config/*.ini /tlgame/tlbb/Server/Config/
+\cp -rf /root/gs_tl_env/config/config.json /tlgame/billing/
 docker cp /root/gs_tl_env/services/server/config/odbc.ini gs_server_1:/etc
 #每次更新后，先重置更改过的文件
-sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' /gs_tl/tlbb/run.sh && \
-sed -i 's/exit$/tail -f \/dev\/null/g' /gs_tl/tlbb/run.sh && \
+sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' /tlgame/tlbb/run.sh && \
+sed -i 's/exit$/tail -f \/dev\/null/g' /tlgame/tlbb/run.sh && \
 cd /root/gs_tl_env/ && \
 git checkout -- gs/services/server/config/odbc.ini && \
 rm -rf  /root/gs_tl_env/scripts/*.ini && \

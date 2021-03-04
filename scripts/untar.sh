@@ -6,17 +6,17 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 解压tar.gz文件包到指定的目录，并给相应的权限
 if [ -f "/root/tlbb.tar.gz" ]; then
-    mv /gs_tl/tlbb /gs_tl/tlbb-`date +%Y%m%d%H%I%S` && \
+    mv /tlgame/tlbb /tlgame/tlbb-`date +%Y%m%d%H%I%S` && \
     tar zxf ~/tlbb.tar.gz -C /gs_tl && \
-    chown -R root:root /gs_tl && \
-    chmod -R 777 /gs_tl && \
+    chown -R root:root /tlgame && \
+    chmod -R 777 /tlgame && \
     mv  ~/tlbb.tar.gz  ~/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
     echo -e "\e[44m 服务端文件【tlbb.tar.gz】已经解压成功！！\e[0m"
 elif [ -f "/root/tlbb.zip" ]; then
-    mv /gs_tl/tlbb /gs_tl/tlbb-`date +%Y%m%d%H%I%S` && \
+    mv /tlgame/tlbb /tlgame/tlbb-`date +%Y%m%d%H%I%S` && \
     sudo yum -y install unzip && \
-    unzip ~/tlbb.zip -d /gs_tl && \
-    chmod -R 777 /gs_tl && \
+    unzip ~/tlbb.zip -d /tlgame && \
+    chmod -R 777 /tlgame && \
     mv ~/tlbb.zip ~/`date +%Y%m%d%H%I%S`-tlbb.zip
     echo -e "\e[44m 服务端文件 tlbb.zip 已经上传成功！！\e[0m"
 else

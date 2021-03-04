@@ -5,7 +5,8 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 一键开服，适合于那种可以一键开启的服务端，如果3-5分钟后，服务端没开启，则需要使用分步开服方式
-chmod -R 777 /gs_tl && \
+chmod -R 777 /tlgame && \
+chown -R root:root /tlgame && \
 cd ~/gs_tl_env && \
 docker-compose exec -d server /home/billing/billing up -d  && \
 docker-compose exec -d server /bin/bash run.sh

@@ -7,7 +7,7 @@
 # comment: 换版本
 docker stop $(docker ps -a -q) && \
 docker rm $(docker ps -a -q) && \
-rm -rf /gs_tl/tlbb/* && \
+rm -rf /tlgame/tlbb/* && \
 untar && \
 cd ~/gs_tl_env && \
 setini && \
