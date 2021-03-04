@@ -151,7 +151,7 @@ docker_run () {
 download_code()
 {
   if [ ! -d "/root/gs_tl_env" ]; then
-    cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
+    cd ~ && git clone https://gitee.com/yulinzhihou/gs_tl_env.git && chmod -R 777 /root/gs_tl_env
   fi
 
   params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
@@ -160,7 +160,6 @@ download_code()
   for i in $(seq 0 1 10)
   do
       index=$i
-
       tmp='grep '${params[index]}' /etc/profile';
       if [ -z "`${tmp}`" ]; then
           echo "export ${params[index]}=${params_value[index]}" >> /etc/profile
@@ -192,62 +191,66 @@ sys_plugins_install
 do_install_docker
 download_code
 # 初始化配置
-param1=('BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD')
-param2=('BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD')
-param3=('BILLING验证端口' '登录端口' 'mysql端口' '游戏端口' '网站端口' '数据库密码')
-param4=('BILLING_NEW_PORT' 'TL_MYSQL_NEW_PORT' 'SERVER_NEW_PORT' 'WEB_NEW_PORT' 'TL_MYSQL_NEW_PASSWORD')
+ini_config()
+{
+  param1=('BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD')
+  param2=('BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD')
+  param3=('BILLING验证端口' '登录端口' 'mysql端口' '游戏端口' '网站端口' '数据库密码')
+  param4=('BILLING_NEW_PORT' 'TL_MYSQL_NEW_PORT' 'SERVER_NEW_PORT' 'WEB_NEW_PORT' 'TL_MYSQL_NEW_PASSWORD')
 
- for i in $(seq 0 1 5)
- do
-    index=$i
-    source /etc/profile;
-    param11=${param1[index]};
-    param111=${!param1[index]};
-    param221=${!param2[index]};
-    param31=${param3[index]};
-    param41=${param4[index]};
-    param441=${!param4[index]};
-    str='grep '${param1[index]}' /etc/profile';
-    [ -z "`${str}`" ] && param11=${param221} || param11=${param111};
-    while :; do echo
-        read -e -p "当前【${param31}】为：${CBLUE}[${param111}]${CEND}，是否需要修改【${param31}】 [y/n](默认: n): " IS_MODIFY
-        IS_MODIFY=${IS_MODIFY:-'n'}
-        if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
-            echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
-        else
-            if [ "${IS_MODIFY}" == 'y' ]; then
-                while :; do echo
-                    read -p "请输入【${param31}】：(默认: ${param221}): " param41
-                    param41=${param41:-${param221}}
-                    if ((index==5)); then
-                        if (( ${#param41} >= 5 )); then
-                            break;
-                        else
-                            echo "${CWARNING}密码最少要6个字符! ${CEND}"
-                        fi
-                    else
-                        if [ ${param4[index]} == ${param221} >/dev/null 2>&1 -o ${param41} -gt 1024 >/dev/null 2>&1 -a ${param41} -lt 65535 >/dev/null 2>&1 ]; then
-                            break;
-                        else
-                            echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
-                        fi
-                    fi
-                done
+   for i in $(seq 0 1 5)
+   do
+      index=${i}
+      source /etc/profile;
+      param11=${param1[index]};
+      param111=${!param1[index]};
+      param221=${!param2[index]};
+      param31=${param3[index]};
+      param41=${param4[index]};
+      param441=${!param4[index]};
+      str='grep '${param1[index]}' /etc/profile';
+      [ -z "`${str}`" ] && param11=${param221} || param11=${param111};
+      while :; do echo
+          read -e -p "当前【${param31}】为：${CBLUE}[${param111}]${CEND}，是否需要修改【${param31}】 [y/n](默认: n): " IS_MODIFY
+          IS_MODIFY=${IS_MODIFY:-'n'}
+#          if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
+#              echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
+#          else
+              if [ "${IS_MODIFY}" == 'y' ]; then
+                  while :; do echo
+                      read -p "请输入【${param31}】：(默认: ${param221}): " param41
+                      param41=${param41:-${param221}}
+                      if ((index==5)); then
+                          if (( ${#param41} >= 5 )); then
+                              break;
+                          else
+                              echo "${CWARNING}密码最少要6个字符! ${CEND}"
+                          fi
+                      else
+                          if [ ${param4[index]} == ${param221} >/dev/null 2>&1 -o ${param41} -gt 1024 >/dev/null 2>&1 -a ${param41} -lt 65535 >/dev/null 2>&1 ]; then
+                              break;
+                          else
+                              echo "${CWARNING}输入错误! 端口范围: 1025~65534${CEND}"
+                          fi
+                      fi
+                  done
 
-                str1='grep '${param1[index]}' /etc/profile'
-                if [ -z "`${str1}`" -a "${param441}" != "${param221}" ]; then
-                    echo "export ${param1[index]}=${param41}" >> /etc/profile
-                elif [ -n "`${str1}`" ]; then
-                    sed -i "s@export ${param1[index]}.*@export ${param1[index]}=${param41}@" /etc/profile
-                fi
-            fi
-            break;
-        fi
-    done
-done
+                  str1='grep '${param1[index]}' /etc/profile'
+                  if [ -z "`${str1}`" -a "${param441}" != "${param221}" ]; then
+                      echo "export ${param1[index]}=${param41}" >> /etc/profile
+                  elif [ -n "`${str1}`" ]; then
+                      sed -i "s@export ${param1[index]}.*@export ${param1[index]}=${param41}@" /etc/profile
+                  fi
+              fi
+#          fi
+      done
+  done
+}
+
 
 ##################################################################
 # 开始调用
+ini_config
 docker_run
 set_command
 ##################################################################
