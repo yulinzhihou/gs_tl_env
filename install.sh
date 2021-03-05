@@ -143,7 +143,8 @@ set_command() {
 }
 
 # 启动环境
-docker_run () {
+docker_run ()
+{
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
       source /etc/profile && cd /root/gs_tl_env && docker-compose up -d
@@ -200,7 +201,7 @@ download_code
 ini_config()
 {
   source /etc/profile
-  [ -z "`grep ^export BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
+  [ ! -z "`grep ^export BILLING_PORT /etc/profile`" ] && BILLING_PORT=${BILLING_DEFAULT_PORT} || BILLING_PORT=${BILLING_PORT}
   while :; do echo
     read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -230,7 +231,7 @@ ini_config()
 
   # 修改mysql_Port参数
   source /etc/profile
-  [ -z "`grep ^export TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
+  [ ! -z "`grep ^export TL_MYSQL_PORT /etc/profile`" ] && TL_MYSQL_PORT=${TL_MYSQL_DEFAULT_PORT} || TL_MYSQL_PORT=${TL_MYSQL_PORT}
   while :; do echo
     read  -e -p "当前【mysql端口】为：${CBLUE}[${TL_MYSQL_PORT}]${CEND}，是否需要修改【mysql端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -260,7 +261,7 @@ ini_config()
 
   # 修改login_Port参数
   source /etc/profile
-  [ -z "`grep ^export LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
+  [ ! -z "`grep ^export LOGIN_PORT /etc/profile`" ] && LOGIN_PORT=${LOGIN_DEFAULT_PORT} || LOGIN_PORT=${LOGIN_PORT}
   while :; do echo
     read  -e -p "当前【登录端口】为：${CBLUE}[${LOGIN_PORT}]${CEND}，是否需要修改【登录端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -290,7 +291,7 @@ ini_config()
 
   # 修改Game_Port参数
   source /etc/profile
-  [ -z "`grep ^export SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
+  [ ! -z "`grep ^export SERVER_PORT /etc/profile`" ] && SERVER_PORT=${SERVER_DEFAULT_PORT} || SERVER_PORT=${SERVER_PORT}
   while :; do echo
     read  -e -p "当前【游戏端口】为：${CBLUE}[${SERVER_PORT}]${CEND}，是否需要修改【游戏端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -320,7 +321,7 @@ ini_config()
 
   # 修改WEB_Port参数
   source /etc/profile
-  [ -z "`grep ^export WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
+  [ ! -z "`grep ^export WEB_PORT /etc/profile`" ] && WEB_PORT=${WEB_DEFAULT_PORT} || WEB_PORT=${WEB_PORT}
   while :; do echo
     read  -e -p "当前【网站端口】为：${CBLUE}[${WEB_PORT}]${CEND}，是否需要修改【网站端口】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -350,7 +351,7 @@ ini_config()
 
   # 修改数据库密码
   source /etc/profile
-  [ -z "`grep ^export TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
+  [ ! -z "`grep ^export TL_MYSQL_PASSWORD /etc/profile`" ] && TL_MYSQL_PASSWORD=${TL_MYSQL_DEFAULT_PASSWORD} || TL_MYSQL_PASSWORD=${TL_MYSQL_PASSWORD}
   while :; do echo
     read  -e -p "当前【数据库密码】为：${CBLUE}[${TL_MYSQL_PASSWORD}]${CEND}，是否需要修改【数据库密码】 [y/n](默认: n): " IS_MODIFY
     IS_MODIFY=${IS_MODIFY:-'n'}
@@ -382,8 +383,8 @@ ini_config()
 
 ##################################################################
 # 开始调用
-ini_config
-docker_run
+#ini_config
+#docker_run
 set_command
 ##################################################################
 # 安装完成提示

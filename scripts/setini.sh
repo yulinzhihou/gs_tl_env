@@ -5,11 +5,11 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据env文件的环境变量，修改对应的配置文件，复制配置文件替换到指定目录，并给与相应权限
-. /etc/profile
+upenv
 
 tar zxf /root/gs_tl_env/config/ini.tar.gz -C /root/gs_tl_env/config/
 tar zxf /root/gs_tl_env/config/billing.tar.gz -C /root/gs_tl_env/config/
-if [ ! -d "/gs_tl/billing/" ]; then
+if [ ! -d "/tlgame/billing/" ]; then
     mkdir -p /tlgame/billing/ && chown -R root:root /tlgame/billing && chmod -R 777 /tlgame
 fi
 tar zxf /root/gs_tl_env/config//billing.tar.gz -C /tlgame/billing/

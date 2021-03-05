@@ -5,7 +5,8 @@
 # Date :  2021-02-13
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据当前环境变量重新生成命令
-source /etc/profile
+upenv
+
 if [ ! -d "/root/gs_tl_env" ]; then
   cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
 fi
