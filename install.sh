@@ -394,8 +394,8 @@ printf "
 #       \e[44m GS游享网 [https://gsgameshare.com] 专用环境安装成功!\e[0m
 #       1.数据库端口: \t`[ ! -z ${TL_MYSQL_PORT} ] && echo ${TL_MYSQL_PORT} || echo 33061`
 #       2.数据库密码: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 123456`
-#       3.登录网关端口: \t`[ ! -z ${LOGIN_PORT} ] && echo ${LOGIN_PORT} || echo 13580`
-#       4.游戏网关端口: \t`[ ! -z ${SERVER_PORT} ] && echo ${SERVER_PORT} || echo 15680`
+#       3.登录网关端口: `[ ! -z ${LOGIN_PORT} ] && echo ${LOGIN_PORT} || echo 13580`
+#       4.游戏网关端口: `[ ! -z ${SERVER_PORT} ] && echo ${SERVER_PORT} || echo 15680`
 #       5.网站端口: \t`[ ! -z ${WEB_PORT} ] && echo ${WEB_PORT} || echo 58080`
 #       6.验证端口: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 21818`
 #       7.技术交流群：\t826717146
