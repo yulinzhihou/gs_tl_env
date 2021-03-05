@@ -158,7 +158,7 @@ docker_run ()
 download_code()
 {
   if [ ! -d "/root/.tlgame" ]; then
-    cd ~ && git clone https://gitee.com/yulinzhihou/gs_tl_env.git && chmod -R 777 /root/.tlgame
+    cd ~ && git clone https://gitee.com/yulinzhihou/gs_tl_env.git .tlgame && chmod -R 777 /root/.tlgame
   fi
 
   params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
@@ -212,9 +212,9 @@ printf "
 #       3.登录网关端口: `[ ! -z ${LOGIN_PORT} ] && echo ${LOGIN_PORT} || echo 13580`
 #       4.游戏网关端口: `[ ! -z ${SERVER_PORT} ] && echo ${SERVER_PORT} || echo 15680`
 #       5.网站端口: \t`[ ! -z ${WEB_PORT} ] && echo ${WEB_PORT} || echo 58080`
-#       6.验证端口: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 21818`
+#       6.验证端口: \t`[ ! -z ${BILLING_PORT} ] && echo ${BILLING_PORT} || echo 21818`
 #       7.技术交流群：\t826717146
-#       8.更多命令请运行 > gs
+#       8.更多命令请运行: gs 查看
 #######################################################################
 "
 endTime=`date +%s`
