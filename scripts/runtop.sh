@@ -6,7 +6,7 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 查看服务器进程情况
 if [ -n $1 ]; then
-    cd ~/gs_tl_env && docker-compose exec server top
+    cd ~/.tlgame && docker-compose exec server top
 else
-    cd ~/gs_tl_env && docker-compose exec $1 top
+    cd ~/.tlgame && docker-compose exec $1 top
 fi

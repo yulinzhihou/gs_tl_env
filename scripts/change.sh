@@ -9,7 +9,7 @@ docker stop $(docker ps -a -q) && \
 docker rm $(docker ps -a -q) && \
 rm -rf /tlgame/tlbb/* && \
 untar && \
-cd ~/gs_tl_env && \
+cd ~/.tlgame && \
 setini && \
 docker-compose up -d && \
 runtlbb

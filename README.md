@@ -33,7 +33,7 @@
 - 第一步：下载部署环境的项目，使用 `root` 用户登录，**否则可能会出现报错，建议安装到 `root` 根目录**
 
 ```bash
-curl -sSL https://gsgameshare.com/gsenv | bash
+curl -sSL https://gsgameshare.com/gsenv | sh
 ```
 
 - 第四步：如果小服务器配置，如`1G` `2G` 内存的，需要拓展一下虚拟内存，才能流畅跑起服务端**(注：此步骤超过4G内存的服务器可以不用管，必须保证服务器硬盘总容量有20G以上才能使用。不是空余空间，是总共有20G
