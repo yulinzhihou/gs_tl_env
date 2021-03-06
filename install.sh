@@ -161,13 +161,13 @@ download_code()
     cd ~ && git clone https://gitee.com/yulinzhihou/gs_tl_env.git .tlgame && chmod -R 777 /root/.tlgame
   fi
 
-  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
-  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
+  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
+  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
 
-  for i in $(seq 0 1 10)
+  for i in $(seq 0 1 16)
   do
       index=$i
-      tmp='grep '${params[index]}' /etc/profile';
+      tmp="grep ^'export ${params[index]}' /etc/profile";
       if [ -z "`${tmp}`" ]; then
           echo "export ${params[index]}=${params_value[index]}" >> /etc/profile
       fi
@@ -202,7 +202,6 @@ download_code
 docker_run
 set_command
 ##################################################################
-# 安装完成提示
 printf "
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
