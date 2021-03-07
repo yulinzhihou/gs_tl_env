@@ -11,18 +11,16 @@
 startTime=`date +%s`
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
+clear
 printf "
 #######################################################################
-#       GS_TLBB_Env 支持：CentOS/RedHat 7+  Ubuntu 18+ Debian 8+      #
+#       GS_TLBB_Env 支持：CentOS/RedHat 7+  Ubuntu 18+ Debian 10+     #
 #       更多天龙网游单机版本请访问：       https://gsgamesahre.com    #
 #       技术交流群：                       826717146                  #
+#       version:                         1.0                          #
+#       update:                          2021-03-05                   #
 #######################################################################
 "
-
-version() {
-  echo "version: 1.0"
-  echo "updated date: 2021-03-05"
-}
 
 # 颜色代码
 echo=echo
@@ -114,6 +112,7 @@ sys_plugins_install()
 # 安装docker docker-compose
 do_install_docker()
 {
+    sudo usermod -aG docker root
     curl -sSL https://get.daocloud.io/docker | sh
     sudo mkdir -p /etc/docker
     sudo tee /etc/docker/daemon.json <<EOF
@@ -167,8 +166,7 @@ download_code()
   for i in $(seq 0 1 16)
   do
       index=$i
-      tmp="grep ^'export ${params[index]}' /etc/profile";
-      if [ -z "`${tmp}`" ]; then
+      if [ -z "`grep ^'export ${params[index]}' /etc/profile`" ]; then
           echo "export ${params[index]}=${params_value[index]}" >> /etc/profile
       fi
   done
