@@ -16,6 +16,7 @@ COPY ./config/mysql-connector-odbc-5.1.5r1144-7.el6.i686.rpm /tmp/mysql-connecto
 COPY ./config/*.repo /etc/yum.repos.d/
 
 RUN yum clean all && \
+    yum makecache && \
     yum update -y && \
     yum check && \
     yum install -y libstdc++.i686 unixODBC.i686 && \
