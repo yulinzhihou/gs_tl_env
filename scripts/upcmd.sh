@@ -8,7 +8,7 @@
 upenv
 
 if [ ! -d "/root/gs_tl_env" ]; then
-  cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git && chmod -R 777 gs_tl_env
+  cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git .tlgame && chmod -R 777 /root/.tlgame
 fi
 
 set_command() {

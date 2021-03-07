@@ -7,11 +7,13 @@
 #CMD tail -f /dev/null
 
 FROM centos:6.8
+LABEL author="yulinzhihou"
+LABEL document="https://gsgameshare.com"
 
 WORKDIR /home/tlbb
 
-COPY ./config/odbc.ini /etc/odbc.ini
 COPY ./config/mysql-connector-odbc-5.1.5r1144-7.el6.i686.rpm /tmp/mysql-connector-odbc-5.1.5r1144-7.el6.i686.rpm
+COPY ./config/*.repo /etc/yum.repos.d/
 
 RUN yum clean all && \
     yum update -y && \
