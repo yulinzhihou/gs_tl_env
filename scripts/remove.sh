@@ -28,8 +28,8 @@ while :; do
         sleep 1
       done
       docker stop $(docker ps -a -q) && \
-      docker rm $(docker ps -a -q) && \
-      docker rmi $(docker images -q) && \
+      docker rm -f $(docker ps -a -q) && \
+      docker rmi -f $(docker images -q) && \
       mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S` && \
       rm -rf ~/.tlgame
       if [ $? == 0 ]; then
