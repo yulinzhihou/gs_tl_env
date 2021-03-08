@@ -12,7 +12,7 @@ startTime=`date +%s`
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 clear
-alias upenv='eval `source /etc/profile`'
+alias upenv="source /root/.tlgame/.env"
 printf "
 #######################################################################
 #       GS_TLBB_Env 支持：CentOS/RedHat 7+  Ubuntu 18+ Debian 10+     #
@@ -36,7 +36,7 @@ download_code()
       fi
   done
 
-  upenv
+  source /etc/profile
   if [ ! -d ${GS_PROJECT} ]; then
     cd ~ && git clone ${GS_PROJECT_URL_1} .tlgame && chmod -R 777 ${GS_PROJECT}
   fi
@@ -166,7 +166,7 @@ docker_run ()
 {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      upenv && cd ${GS_PROJECT} && docker-compose up -d
+      source /etc/profile && cd ${GS_PROJECT} && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz

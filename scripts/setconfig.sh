@@ -13,6 +13,9 @@ else
   . ./color
 fi
 
+alias upenv="source /root/.tlgame/.env"
+source /root/.tlgame/.env
+
 FILE_PATH="/root/.tlgame/.env"
 if [ -f ${FILE_PATH} ]; then
   touch ${FILE_PATH}
@@ -38,7 +41,7 @@ while :; do echo
       done
 
       if [ -z "`grep ^'BILLING_PORT' ${FILE_PATH}`" -a "${BILLING_NEW_PORT}" != "${BILLING_DEFAULT_PORT}" ]; then
-        echo "export BILLING_PORT=${BILLING_NEW_PORT}" >> ${FILE_PATH}
+        echo "BILLING_PORT=${BILLING_NEW_PORT}" >> ${FILE_PATH}
       elif [ -n "`grep ^'BILLING_PORT' ${FILE_PATH}`" ]; then
         sed -i "s@^BILLING_PORT.*@BILLING_PORT=${BILLING_NEW_PORT}@" ${FILE_PATH}
       fi
