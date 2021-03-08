@@ -12,13 +12,14 @@ startTime=`date +%s`
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 clear
+alias upenv='eval `source /etc/profile`'
 printf "
 #######################################################################
 #       GS_TLBB_Env 支持：CentOS/RedHat 7+  Ubuntu 18+ Debian 10+     #
 #       更多天龙网游单机版本请访问：       https://gsgamesahre.com    #
 #       技术交流群：                       826717146                  #
-#       version:                         1.0                          #
-#       update:                          2021-03-05                   #
+#       version:                             1.0                      #
+#       update:                            2021-03-05                 #
 #######################################################################
 "
 

@@ -227,7 +227,7 @@ upenv
 # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 # 开环境
-cd /root/gs_tl_env && docker-compose up -d
+cd /root/.tlgame && docker-compose up -d
 if [ $? == 0 ]; then
   echo -e "\e[43m 配置写入成功！！\e[0m"
 else
