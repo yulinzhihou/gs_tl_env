@@ -5,58 +5,61 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据env文件的环境变量，修改对应的配置文件，复制配置文件替换到指定目录，并给与相应权限
-upenv
-
-tar zxf /root/.tlgame/config/ini.tar.gz -C /root/.tlgame/config/
-tar zxf /root/.tlgame/config/billing.tar.gz -C /root/.tlgame/config/
-if [ ! -d "/tlgame/billing/" ]; then
-    mkdir -p /tlgame/billing/ && chown -R root:root /tlgame && chmod -R 777 /tlgame
+# 颜色代码
+if [ -f ./color.sh ]; then
+  . ./color.sh
+else
+  . ./color
 fi
-tar zxf /root/.tlgame/config//billing.tar.gz -C /tlgame/billing/
+upenv
+BASE_PATH="/root/.tlgame"
+GS_PROJECT_PATH="/tlgame"
+
+tar zxf ${BASE_PATH}/config/ini.tar.gz -C ${BASE_PATH}/config/
+tar zxf ${BASE_PATH}/config/billing.tar.gz -C ${BASE_PATH}/config/
+if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
+    mkdir -p ${GS_PROJECT_PATH}/billing/ && chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
+fi
+tar zxf ${BASE_PATH}/config/billing.tar.gz -C ${GS_PROJECT_PATH}/billing/
 
 # 游戏配置文件
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
-    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" /root/.tlgame/config/LoginInfo.ini
-    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" /root/.tlgame/config/ShareMemInfo.ini
-    sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" /root/.tlgame/services/server/config/odbc.ini
+    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config/LoginInfo.ini
+    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config/ShareMemInfo.ini
+    sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/services/server/config/odbc.ini
 fi
 
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
-    sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" /root/.tlgame/config/config.json
+    sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config/config.json
 fi
 
-#if [ $TLBB_MYSQL_PORT -ne 3306 ]; then
-#    sed -i "s/DBPort=3306/DBPort=${TLBB_MYSQL_PORT}/g" /root/.tlgame/gs/scripts/LoginInfo.ini
-#    sed -i "s/DBPort=3306/DBPort=${TLBB_MYSQL_PORT}/g" /root/.tlgame/gs/scripts/ShareMemInfo.ini
-#    sed -i "s/3306/${TLBB_MYSQL_PORT}/g" /root/.tlgame/gs/services/server/config/odbc.ini
-#fi
-#
-#if [ $WEB_MYSQL_PORT -ne 3306 ]; then
-#    sed -i "s/3306/${WEB_MYSQL_PORT}/g" /root/.tlgame/gs/scripts/config.json
-#fi
 
-#if [ ${BILLING_PORT} != "21818" ]; then
-#    sed -i "s/21818/${BILLING_PORT}/g" /root/.tlgame/gs/scripts/config.json
-#    sed -i "s/Port0=21818/Port0=${BILLING_PORT}/g" /root/.tlgame/gs/scripts/ServerInfo.ini
-#fi
+if [ ${BILLING_PORT} != "21818" ]; then
+    sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/scripts/config.json
+    sed -i "s/Port0=21818/Port0=${BILLING_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
+fi
 
 if [ "${LOGIN_PORT}" != "13580" ]; then
-    sed -i "s/Port0=13580/Port0=${LOGIN_PORT}/g" /root/.tlgame/config/ServerInfo.ini
+    sed -i "s/Port0=13580/Port0=${LOGIN_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
 if [ "${SERVER_PORT}" != "15680" ]; then
-    sed -i "s/Port0=15680/Port0=${SERVER_PORT}/g" /root/.tlgame/config/ServerInfo.ini
+    sed -i "s/Port0=15680/Port0=${SERVER_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
 #复制到已经修改好的文件到指定容器
-\cp -rf /root/.tlgame/config/*.ini /tlgame/tlbb/Server/Config/
-\cp -rf /root/.tlgame/config/config.json /tlgame/billing/
-docker cp /root/.tlgame/services/server/config/odbc.ini gs_server_1:/etc
+\cp -rf ${BASE_PATH}/config/*.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
+\cp -rf ${BASE_PATH}/config/config.json ${GS_PROJECT_PATH}/billing/
+docker cp ${BASE_PATH}/services/server/config/odbc.ini gs_server_1:/etc
 #每次更新后，先重置更改过的文件
-sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' /tlgame/tlbb/run.sh && \
-sed -i 's/exit$/tail -f \/dev\/null/g' /tlgame/tlbb/run.sh && \
-cd /root/.tlgame/ && \
+#sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
+sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
+cd ${BASE_PATH}/ && \
 git checkout -- services/server/config/odbc.ini && \
-rm -rf  /root/.tlgame/config/*.ini && \
-rm -rf  /root/.tlgame/config/config.json
-echo -e "\e[44m 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！\e[0m"
+rm -rf  ${BASE_PATH}/config/*.ini && \
+rm -rf  ${BASE_PATH}/config/config.json
+if [ $? == 0 ]; then
+  echo -e "${CBLUE} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+else
+  echo -e "${CRED} 配置文件写入失败！${CEND}"
+fi

@@ -5,8 +5,17 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 连接服务器环境
-if [ $1 == "tlmysql" ] || [ $1 == "nginx" ]; then
-    cd ~/.tlgame && docker-compose exec $1 bash
+# 颜色代码
+if [ -f ./color.sh ]; then
+  . ./color.sh
 else
-    cd ~/.tlgame && docker-compose exec server bash
+  . ./color
+fi
+
+if [ $1 == "tlmysql" ] || [ $1 == "nginx" ]; then
+    cd /root/.tlgame && docker-compose exec $1 bash
+elif [ -z $1 ]; then
+    cd /root/.tlgame && docker-compose exec server bash
+else
+  echo  -e "${CBLUE}错误：输入有误！！请使用 link tlmysql|nginx|server${CEND}";
 fi

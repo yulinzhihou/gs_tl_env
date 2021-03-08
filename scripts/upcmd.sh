@@ -5,9 +5,14 @@
 # Date :  2021-02-13
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据当前环境变量重新生成命令
+# 颜色代码
+if [ -f ./color.sh ]; then
+  . ./color.sh
+else
+  . ./color
+fi
 upenv
-
-if [ ! -d "/root/gs_tl_env" ]; then
+if [ ! -d "/root/.tlgame" ]; then
   cd ~ && git clone https://github.com/yulinzhihou/gs_tl_env.git .tlgame && chmod -R 777 /root/.tlgame
 fi
 
@@ -23,7 +28,7 @@ set_command() {
 set_command
 
 if [ $? == '0' ]; then
-  echo -e "\e[44m 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！\e[0m"
+  echo -e "${CBLUE} 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！${CEND}"
 else
-  echo -e "\e[44m 命令重新生成失败，请联系作者，或者重装安装环境\e[0m"
+  echo -e "${CRED} 命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
 fi

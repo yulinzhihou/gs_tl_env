@@ -6,6 +6,13 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 当用户需要重新生成数据库端口，密码时，则使用此命令进行重装写入配置，注意，执行完成后需要重启服务器再进行配置。否则需要使用 upenv.d 让数据临时生效
 # 修改billing参数
+# 颜色代码
+if [ -f ./color.sh ]; then
+  . ./color.sh
+else
+  . ./color
+fi
+
 FILE_PATH="/root/.tlgame/.env"
 if [ -f ${FILE_PATH} ]; then
   touch ${FILE_PATH}
@@ -233,7 +240,7 @@ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 # 开环境
 cd /root/.tlgame && docker-compose up -d
 if [ $? == 0 ]; then
-  echo -e "\e[43m 配置写入成功！！\e[0m"
+  echo -e "${CBLUE} 配置写入成功！！${CEND}"
 else
-  echo -e "\e[43m 配置写入失败，请移除环境重新安装！！\e[0m"
+  echo -e "${CRED} 配置写入失败，请移除环境重新安装！！${CEND}"
 fi
