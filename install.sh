@@ -13,7 +13,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 clear
 alias upenv="source /root/.tlgame/.env"
-printf "
+printf "\e[1;35m
 #######################################################################
 #       GS_TLBB_Env 支持：CentOS/RedHat 7+  Ubuntu 18+ Debian 10+     #
 #       更多天龙网游单机版本请访问：       https://gsgamesahre.com    #
@@ -21,12 +21,12 @@ printf "
 #       version:                             1.0                      #
 #       update:                            2021-03-05                 #
 #######################################################################
-"
+\033[0m"
 # 下载环境源码
 download_code()
 {
   params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
-  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
+  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://gitee.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
 
   for i in $(seq 0 1 10)
   do
@@ -39,6 +39,10 @@ download_code()
   source /etc/profile
   if [ ! -d ${GS_PROJECT} ]; then
     cd ~ && git clone ${GS_PROJECT_URL_1} .tlgame && chmod -R 777 ${GS_PROJECT}
+  fi
+
+  if [ $? != 0 ]; then
+      echo -e "${CRED} 环境项目源码下载失败！${CEND}";exit 1;
   fi
 }
 
@@ -200,7 +204,7 @@ do_install_docker
 docker_run
 set_command
 ##################################################################
-printf "
+printf "${CBLUE}
 #######################################################################
 #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
 #       \e[44m GS游享网 [https://gsgameshare.com] 专用环境安装成功!\e[0m
@@ -213,7 +217,7 @@ printf "
 #       7.技术交流群：\t826717146
 #       8.更多命令请运行: gs 查看
 #######################################################################
-"
+${CEND}"
 endTime=`date +%s`
 ((outTime=($endTime-$startTime)/60))
 echo -e "总耗时:\e[44m $outTime \e[0m 分钟!"
