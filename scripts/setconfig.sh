@@ -8,9 +8,9 @@
 # 修改billing参数
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 
 alias upenv="source /root/.tlgame/.env"

@@ -7,9 +7,9 @@
 # comment: 一键命令关闭所有
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 cd ~/.tlgame && \
 docker-compose exec -d server /bin/bash stop.sh && \

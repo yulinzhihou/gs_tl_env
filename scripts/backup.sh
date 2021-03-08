@@ -7,9 +7,9 @@
 # comment: 备份数据库功能和打包服务端
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 FILENAME=`date +%Y_%m_%d_%H_%M_%S`
 FILEPATH="/tlgame/backup/"

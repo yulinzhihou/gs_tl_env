@@ -5,13 +5,11 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 连接服务器环境
-# 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
-
 if [ $1 == "tlmysql" ] || [ $1 == "nginx" ]; then
     cd /root/.tlgame && docker-compose exec $1 bash
 elif [ -z $1 ]; then

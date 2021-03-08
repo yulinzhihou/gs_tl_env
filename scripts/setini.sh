@@ -7,9 +7,9 @@
 # comment: 根据env文件的环境变量，修改对应的配置文件，复制配置文件替换到指定目录，并给与相应权限
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 upenv
 BASE_PATH="/root/.tlgame"

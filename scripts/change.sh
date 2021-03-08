@@ -7,9 +7,9 @@
 # comment: 换版本
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 docker stop $(docker ps -a -q) && \
 docker rm $(docker ps -a -q) && \

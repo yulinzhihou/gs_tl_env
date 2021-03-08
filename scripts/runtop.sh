@@ -7,9 +7,9 @@
 # comment: 查看服务器进程情况
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 
 if [ -n $1 ]; then

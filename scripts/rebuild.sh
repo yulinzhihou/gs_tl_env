@@ -7,9 +7,9 @@
 # comment: 服务器环境重构，删除容器，重新启动
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 
 while :; do echo

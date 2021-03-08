@@ -7,9 +7,9 @@
 # comment: 一键命令重启命令所有
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 
 while :; do

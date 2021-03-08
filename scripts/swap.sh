@@ -5,11 +5,10 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 内存小，但是容量有20个G以上的云服务器。需要拓展虚拟内存
-# 颜色代码
 if [ -f ./color.sh ]; then
-  . ./color.sh
+  . /root/.tlgame/scripts/color.sh
 else
-  . ./color
+  . /usr/local/bin/color
 fi
 
 if [ ! -f /usr/swap/swapfile ]; then
