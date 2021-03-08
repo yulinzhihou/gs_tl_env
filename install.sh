@@ -22,6 +22,25 @@ printf "
 #       update:                            2021-03-05                 #
 #######################################################################
 "
+# 下载环境源码
+download_code()
+{
+  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
+  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
+
+  for i in $(seq 0 1 10)
+  do
+      index=$i
+      if [ -z "`grep ^'export ${params[index]}' /etc/profile`" ]; then
+          echo "export ${params[index]}='${params_value[index]}'" >> /etc/profile
+      fi
+  done
+
+  upenv
+  if [ ! -d ${GS_PROJECT} ]; then
+    cd ~ && git clone ${GS_PROJECT_URL_1} .tlgame && chmod -R 777 ${GS_PROJECT}
+  fi
+}
 
 # 颜色代码
 echo=echo
@@ -134,10 +153,10 @@ EOF
 
 # 配置常用命令到系统中
 set_command() {
-    ls -l /root/.tlgame/scripts/ | awk '{print $9}' > ./command.txt
-    for VAR in `cat ./command.txt`; do
+    ls -l ${GS_PROJECT}/scripts/ | awk '{print $9}' > /tmp/command.txt
+    for VAR in `cat /tmp/command.txt`; do
         if [ -n ${VAR} ]; then
-            \cp -rf /root/.tlgame/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
+            \cp -rf ${GS_PROJECT}/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}
         fi
     done
 }
@@ -147,31 +166,11 @@ docker_run ()
 {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      source /etc/profile && cd /root/.tlgame && docker-compose up -d
+      upenv && cd ${GS_PROJECT} && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz
     fi
-}
-
-# 下载环境源码
-download_code()
-{
-  if [ ! -d "/root/.tlgame" ]; then
-    cd ~ && git clone https://gitee.com/yulinzhihou/gs_tl_env.git .tlgame && chmod -R 777 /root/.tlgame
-  fi
-
-  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
-  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://github.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
-
-  for i in $(seq 0 1 16)
-  do
-      index=$i
-      if [ -z "`grep ^'export ${params[index]}' /etc/profile`" ]; then
-          echo "export ${params[index]}=${params_value[index]}" >> /etc/profile
-      fi
-  done
-
 }
 
 # 数据备份
@@ -196,8 +195,8 @@ data_backup()
 ##################################################################
 # 开始调用
 sys_plugins_install
-do_install_docker
 download_code
+do_install_docker
 docker_run
 set_command
 ##################################################################
