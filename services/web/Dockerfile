@@ -74,4 +74,4 @@ FROM creativitykills/nginx-php-server:latest
 #RUN chown -R www:www /var/www
 #
 ## KICKSTART!
-#CMD ["/start.sh"]
+CMD ["/start.sh"]
