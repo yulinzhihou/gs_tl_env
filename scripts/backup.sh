@@ -11,12 +11,12 @@ if [ -f ./color.sh ]; then
 else
   . /usr/local/bin/color
 fi
-FILENAME=`date +%Y_%m_%d_%H_%M_%S`
+FILENAME="`date +%Y_%m_%d_%H_%M_%S`"
 FILEPATH="/tlgame/backup/"
 LOG_FILE="backup.log"
 
 
-if [ -d ${FILEPATH} ]; then
+if [ ! -d ${FILEPATH} ]; then
     mkdir -p ${FILEPATH}
 fi
 
@@ -24,18 +24,18 @@ fi
 mv /tlgame/tlmysql/*.sql ${FILEPATH}
 #判断是否备份成功
 if [[ $? -eq 0 ]]; then
-    echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\ttlbbdb-${FILENAME}.sql\t备份成功!!">>${FILEPATH}${LOG_FILE}
-     echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\tweb-${FILENAME}.sql\t备份成功">>${FILEPATH}${LOG_FILE}
+    echo -e "`date '+%Y-%m-%d-%H-%M-%S'`\ttlbbdb-${FILENAME}.sql\t备份成功!!">>${FILEPATH}${LOG_FILE}
+    echo -e "`date '+%Y-%m-%d-%H-%M-%S'`\tweb-${FILENAME}.sql\t备份成功">>${FILEPATH}${LOG_FILE}
 else
-    echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\ttlbbdb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
-    echo -e "`date "+%Y-%m-%d-%H-%M-%S"`\tweb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
+    echo -e "`date '+%Y-%m-%d-%H-%M-%S'`\ttlbbdb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
+    echo -e "`date '+%Y-%m-%d-%H-%M-%S'`\tweb-${FILENAME}.sql\t备份失败">>${FILEPATH}${LOG_FILE}
 fi
 #备份服务端
 tar zcf tlbb-${FILENAME}.tar.gz /tlgame/tlbb
 #判断是否备份成功
 if [ $? -eq 0 ]; then
-    echo -e "${CBLUE}`date "+%Y-%m-%d-%H-%M-%S"`\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}">>${FILEPATH}${LOG_FILE}
+    echo -e "${CBLUE}`date '+%Y-%m-%d-%H-%M-%S'`\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}">>${FILEPATH}${LOG_FILE}
 else
-    echo -e "${CRED}`date "+%Y-%m-%d-%H-%M-%S"`\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}">>${FILEPATH}${LOG_FILE}
+    echo -e "${CRED}`date '+%Y-%m-%d-%H-%M-%S'`\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}">>${FILEPATH}${LOG_FILE}
 fi
 

@@ -15,7 +15,7 @@ services:
     links:
       - tlmysql
       - web
-  # Game database
+  # Database
   tlmysql:
     build:
       context: ./services/tlmysql

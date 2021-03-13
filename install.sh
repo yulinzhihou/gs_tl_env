@@ -181,18 +181,22 @@ docker_run ()
 data_backup()
 {
     #备份数据库
-    crontabCount=`crontab -l | grep docker exec -it gs_tlmysql_1 | grep -v grep |wc -l`
+    crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"` | grep -v grep |wc -l`
     if [ $crontabCount = 0 ];then
-        (echo "0 */1 * * * sh docker exec -it gs_tlmysql_1 /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
+        (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"``docker ps --format "{{.Names}}" | grep "tlmysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
     fi
 
-    docker cp /root/gs_tl_env/include/tlmysql_backup.sh gs_server_1:/
+    docker cp /root/gs_tl_env/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "tlmysql"`:/
     docker exec -it gs_tlmysql_1 /bin/bash -c "chmod -R 777 /tlmysql_backup.sh"
 
     #备份服务端
-    crontabCount=`crontab -l | grep tlbbserver | grep -v grep |wc -l`
+    crontabCount=`crontab -l | grep `docker ps --format "{{.Names}}" | grep "server"` | grep -v grep |wc -l`
     if [ $crontabCount = 0 ];then
         (echo "0 */1 * * * sh  > /dev/null 2>&1 &"; crontab -l) | crontab
+    fi
+
+    if [ $? == 0 ]; then
+        echo -e "开启备份！！"
     fi
 }
 
@@ -203,6 +207,7 @@ download_code
 do_install_docker
 docker_run
 set_command
+data_backup
 ##################################################################
 printf "${CBLUE}
 #######################################################################
