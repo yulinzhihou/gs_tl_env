@@ -69,7 +69,7 @@ RUN chmod 755 /start.sh
 WORKDIR /var/www
 
 #GRANT PRIVILEGIES TO www-data user:group to read in /var/www
-RUN chown -R www-data:www-data /var/www
+RUN chown -R www:www /var/www
 
 # KICKSTART!
 CMD ["/start.sh"]
