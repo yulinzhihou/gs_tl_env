@@ -68,10 +68,10 @@ FROM creativitykills/nginx-php-server:latest
 ##EXPOSE ${NGINX_HTTPS_PORT} ${NGINX_HTTP_PORT}
 #
 ## SET THE WORK DIRECTORY.
-#WORKDIR /var/www
+WORKDIR /var/www
 #
 ##GRANT PRIVILEGIES TO www-data user:group to read in /var/www
-#RUN chown -R www:www /var/www
+RUN chown -R www:www /var/www
 #
 ## KICKSTART!
 CMD ["/start.sh"]
