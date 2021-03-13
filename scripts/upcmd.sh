@@ -16,7 +16,7 @@ if [ ! -d "/root/.tlgame" ]; then
 fi
 
 set_command() {
-    ls -l /root/gs_tl_env/scripts/ | awk '{print $9}' > ./command.txt
+    ls -l /root/.tlgame/scripts/ | awk '{print $9}' > ./command.txt
     for VAR in `cat ./command.txt`; do
         if [ -n ${VAR} ]; then
             \cp -rf ~/gs_tl_env/scripts/${VAR} /usr/local/bin/${VAR%%.*} && chmod +x /usr/local/bin/${VAR%%.*}

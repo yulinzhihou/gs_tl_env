@@ -10,7 +10,7 @@ if [ -f ./color.sh ]; then
 else
   . /usr/local/bin/color
 fi
-if [ $1 == "tlmysql" ] || [ $1 == "nginx" ]; then
+if [ $1 == "tlmysql" ] || [ $1 == "web" ]; then
     cd /root/.tlgame && docker-compose exec $1 bash
 elif [ -z $1 ]; then
     cd /root/.tlgame && docker-compose exec server bash
