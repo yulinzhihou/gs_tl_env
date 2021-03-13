@@ -29,10 +29,10 @@ services:
       MYSQL_DATABASE: "tlbbdb"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     restart: ${RESTART}
-  # Web database
-  nginx:
+  # Web Server
+  web:
     build:
-      context: ./services/nginx
+      context: ./services/web
       dockerfile: Dockerfile
     volumes:
     - "${SHARED_DIR}/www/:/var/www"
