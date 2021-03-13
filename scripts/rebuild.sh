@@ -23,7 +23,7 @@ while :; do echo
   else
     if [ ${option} == 1 ]; then
       for ((time = 10; time > 0; time--)); do
-        echo -ne "\r在准备正行重构操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+D 退出！\r"
+        echo -ne "\r在准备正行重构操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
         sleep 1
       done
       docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && rm -rf /tlgame/tlbb/* && cd ~/.tlgame && docker-compose up -d

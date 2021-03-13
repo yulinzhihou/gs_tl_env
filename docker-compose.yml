@@ -14,7 +14,7 @@ services:
     restart: ${RESTART}
     links:
       - tlmysql
-      - nginx
+      - web
   # Game database
   tlmysql:
     build:
