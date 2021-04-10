@@ -12,17 +12,28 @@ else
   . /usr/local/bin/color
 fi
 
-for ((time = 10; time > -1; time--)); do
-  sleep 1
-  echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+while :; do echo
+    for ((time = 10; time > 0; time--)); do
+      sleep 1
+      echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
+    done
+    if [ -e ~/.tlgame ]; then
+      docker stop $(docker ps -a -q) && \
+      docker rm -f $(docker ps -a -q) && \
+      docker rmi -f $(docker images -q) && \
+      mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S` && \
+      rm -rf ~/.tlgame
+    else
+      docker stop $(docker ps -a -q) && \
+      docker rm -f $(docker ps -a -q) && \
+      docker rmi -f $(docker images -q) && \
+      mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S`
+    fi
+
+    if [ $? == 0 ]; then
+      echo -e "${CBLUE} 数据清除成功，请重新安装环境！！${CEND}"
+    else
+      echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
+    fi
+    break
 done
-docker stop $(docker ps -a -q) && \
-docker rm -f $(docker ps -a -q) && \
-docker rmi -f $(docker images -q) && \
-mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S` && \
-rm -rf ~/.tlgame
-if [ $? == 0 ]; then
-  echo -e "${CBLUE} 数据清除成功，请重新安装环境！！${CEND}"
-else
-  echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
-fi
