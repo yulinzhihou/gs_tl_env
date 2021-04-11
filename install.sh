@@ -203,11 +203,19 @@ data_backup()
 ##################################################################
 # 开始调用
 sys_plugins_install
+[ $? == 0 ] && echo -e "${CBLUE} sys_plugins_install success!! ${CEND}" || { echo -e "${CRED} sys_plugins_install failed!! ${CEND}"; exit;}
 download_code
+[ $? == 0 ] && echo -e "${CBLUE} download_code success!! ${CEND}" || { echo -e "${CRED} download_code failed!! ${CEND}"; exit; }
 do_install_docker
-docker_run
+[ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit;}
 set_command
+[ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit;}
+setconfig
+[ $? == 0 ] && echo -e "${CBLUE} set config success！${CEND}" || { echo -e "${CRED}  set config failed ！！${CEND}"; exit;}
+docker_run
+[ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit;}
 data_backup
+[ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit;}
 ##################################################################
 printf "${CBLUE}
 #######################################################################
