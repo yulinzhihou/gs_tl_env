@@ -147,10 +147,7 @@ do_install_docker()
 
     docker --info >& /dev/null
     if [ $? -ne 0 ]; then
-        [ "${PM}" == 'yum' ] && { sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo; sed -i "s/https:\/\/download.docker.com\/linux\/centos/http:\/\/mirrors.ustc.edu.cn\/docker-ce\/linux\/centos/g" /etc/yum.repos.d/docker-ce.repo; yum -y install docker;}
-#        [ "${PM}" == 'apt-get' ] &&
-#        [ "${CentOS_ver}" == '8' ] &&
-
+        curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
         if [ -e "/etc/docker" ]; then
             sudo mkdir -p /etc/docker
             sudo tee /etc/docker/daemon.json <<EOF
@@ -191,7 +188,9 @@ docker_run ()
 {
     if [ ! -e /root/gs_tl_offline.tar.gz ]; then
       # 在线镜像拉取
-      source /etc/profile && cd ${GS_PROJECT} && docker-compose up -d
+      . /etc/profile
+      source /etc/profile
+      cd ${GS_PROJECT} && docker-compose up -d
     else
       # 离线版本。暂时没做
       tar zxf gs_tl_offline.tar.gz
