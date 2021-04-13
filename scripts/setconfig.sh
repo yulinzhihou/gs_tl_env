@@ -13,12 +13,11 @@ else
   . /usr/local/bin/color
 fi
 
+FILE_PATH="/root/.tlgame/"
 alias upenv="source /root/.tlgame/.env"
-source /root/.tlgame/.env
 
-FILE_PATH="/root/.tlgame/.env"
-if [ -f ${FILE_PATH} ]; then
-  touch ${FILE_PATH}
+if [ -e ${FILE_PATH} ]; then
+  cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
 fi
 
 upenv

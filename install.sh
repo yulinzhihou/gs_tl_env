@@ -25,10 +25,10 @@ printf "\e[1;35m
 # 下载环境源码
 download_code()
 {
-  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
-  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://gitee.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
+  params=('SHARED_DIR' 'RESTART' 'BILLING_DEFAULT_PORT' 'LOGIN_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PORT' 'SERVER_DEFAULT_PORT' 'WEB_DEFAULT_PORT' 'TL_MYSQL_DEFAULT_PASSWORD' 'BILLING_PORT' 'LOGIN_PORT' 'TL_MYSQL_PORT' 'SERVER_PORT' 'WEB_PORT' 'TL_MYSQL_PASSWORD' 'GS_PROJECT' 'GS_PROJECT_URL_1' 'GS_PROJECT_URL_2')
+  params_value=('/tlgame' 'always' '21818' '13580' '33601' '15680' '58080' '123456' '21818' '13580' '33601' '15680' '58080' '123456' '/root/.tlgame' 'https://gitee.com/yulinzhihou/gs_tl_env.git' 'https://gitee.com/yulinzhihou/gs_tl_env.git')
 
-  for i in $(seq 0 1 10)
+  for i in $(seq 0 1 16)
   do
       index=$i
       if [ -z "`grep ^'export ${params[index]}' /etc/profile`" ]; then
@@ -41,8 +41,11 @@ download_code()
     cd ~ && git clone ${GS_PROJECT_URL_1} .tlgame && chmod -R 777 ${GS_PROJECT}
   fi
 
-  if [ $? != 0 ]; then
-      echo -e "${CRED} 环境项目源码下载失败！${CEND}";exit 1;
+  FILE_PATH="/root/.tlgame/"
+  alias upenv="source /root/.tlgame/.env"
+
+  if [ -e ${FILE_PATH} ]; then
+    cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
   fi
 }
 
@@ -136,21 +139,39 @@ sys_plugins_install()
 # 安装docker docker-compose
 do_install_docker()
 {
-    sudo usermod -aG docker root
-    curl -sSL https://get.daocloud.io/docker | sh
-    sudo mkdir -p /etc/docker
-    sudo tee /etc/docker/daemon.json <<EOF
+    egrep "^docker" /etc/group >& /dev/null
+    if [ $? -ne 0 ]; then
+      sudo groupadd docker
+      sudo usermod -aG docker ${USER}
+    fi
+
+    docker --info >& /dev/null
+    if [ $? -ne 0 ]; then
+        [ "${PM}" == 'yum' ] && { sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo; sed -i "s/https:\/\/download.docker.com\/linux\/centos/http:\/\/mirrors.ustc.edu.cn\/docker-ce\/linux\/centos/g" /etc/yum.repos.d/docker-ce.repo; yum -y install docker;}
+#        [ "${PM}" == 'apt-get' ] &&
+#        [ "${CentOS_ver}" == '8' ] &&
+
+        if [ -e "/etc/docker" ]; then
+            sudo mkdir -p /etc/docker
+            sudo tee /etc/docker/daemon.json <<EOF
 {
   "registry-mirrors": ["https://f0tv1cst.mirror.aliyuncs.com"]
 }
 EOF
-  [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
-  [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
-  # 安装 docker-compose
-  [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
-  [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
+        fi
 
-  curl -L https://get.daocloud.io/docker/compose/releases/download/1.28.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+      [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
+      [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
+      # 安装 docker-compose
+      [ "${OS}" == "Debian" ] || [ "${OS}" == "Ubuntu" ] && sudo apt-get service docker start
+      [ "${OS}" == "CentOS" ] && sudo systemctl daemon-reload && sudo systemctl restart docker
+
+    else
+      echo -e "${CRED}docker was installed !!!${CEND}";
+    fi
+
+
+  curl -L https://get.daocloud.io/docker/compose/releases/download/1.29.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
   docker-compose --version
 }
@@ -203,19 +224,16 @@ data_backup()
 ##################################################################
 # 开始调用
 sys_plugins_install
-[ $? == 0 ] && echo -e "${CBLUE} sys_plugins_install success!! ${CEND}" || { echo -e "${CRED} sys_plugins_install failed!! ${CEND}"; exit;}
 download_code
-[ $? == 0 ] && echo -e "${CBLUE} download_code success!! ${CEND}" || { echo -e "${CRED} download_code failed!! ${CEND}"; exit; }
+[ $? == 0 ] && echo -e "${CBLUE} download_code success!! ${CEND}" || { echo -e "${CRED} download_code failed!! ${CEND}"; exit 1; }
 do_install_docker
-[ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit;}
+[ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit 1;}
 set_command
-[ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit;}
-setconfig
-[ $? == 0 ] && echo -e "${CBLUE} set config success！${CEND}" || { echo -e "${CRED}  set config failed ！！${CEND}"; exit;}
+[ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit 1;}
 docker_run
-[ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit;}
+[ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit 1;}
 data_backup
-[ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit;}
+[ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit 1;}
 ##################################################################
 printf "${CBLUE}
 #######################################################################
