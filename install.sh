@@ -133,7 +133,7 @@ sys_plugins_install()
   [ "${PM}" == 'apt-get' ] && apt-get -y update
   [ "${PM}" == 'yum' ] && yum clean all
   ${PM} -y install wget gcc curl python git
-  [ "${CentOS_ver}" == '8' ] && { yum -y install python36; sudo alternatives --set python /usr/bin/python3; }
+  [ "${CentOS_ver}" == '8' ] && { yum -y install python36 gcc wget curl git; sudo alternatives --set python /usr/bin/python3; }
 }
 
 # 安装docker docker-compose
@@ -148,7 +148,7 @@ do_install_docker()
     docker --info >& /dev/null
     if [ $? -ne 0 ]; then
         curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
-        if [ -e "/etc/docker" ]; then
+        if [ ! -e "/etc/docker" ]; then
             sudo mkdir -p /etc/docker
             sudo tee /etc/docker/daemon.json <<EOF
 {
@@ -168,7 +168,7 @@ EOF
     fi
 
 
-  curl -L https://get.daocloud.io/docker/compose/releases/download/1.29.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+  curl -L https://get.daocloud.io/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
   docker-compose --version
 }
@@ -186,7 +186,7 @@ set_command() {
 # 启动环境
 docker_run ()
 {
-    if [ ! -e /root/gs_tl_offline.tar.gz ]; then
+    if [ ! -e "/root/gs_tl_offline.tar.gz" ]; then
       # 在线镜像拉取
       . /etc/profile
       source /etc/profile
@@ -206,17 +206,13 @@ data_backup()
         (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"``docker ps --format "{{.Names}}" | grep "tlmysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
     fi
 
-    docker cp /root/gs_tl_env/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "tlmysql"`:/
+    docker cp /root/.tlgame/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "tlmysql"`:/
     docker exec -it gs_tlmysql_1 /bin/bash -c "chmod -R 777 /tlmysql_backup.sh"
 
     #备份服务端
     crontabCount=`crontab -l | grep `docker ps --format "{{.Names}}" | grep "server"` | grep -v grep |wc -l`
-    if [ $crontabCount = 0 ];then
+    if [ $crontabCount -e 0 ];then
         (echo "0 */1 * * * sh  > /dev/null 2>&1 &"; crontab -l) | crontab
-    fi
-
-    if [ $? == 0 ]; then
-        echo -e "开启备份！！"
     fi
 }
 

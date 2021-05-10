@@ -1,65 +1,65 @@
--- Ãë¼¶ĞÄÌø½Å±¾[²âÊÔ]
--- by ĞÄÓïÄÑËß 2020-9-22 16:03:33 V1
--- by ĞÄÓïÄÑËß 2021-1-15 14:39:46 V2
+-- ç§’çº§å¿ƒè·³è„šæœ¬[æµ‹è¯•]
+-- by å¿ƒè¯­éš¾è¯‰ 2020-9-22 16:03:33 V1
+-- by å¿ƒè¯­éš¾è¯‰ 2021-1-15 14:39:46 V2
 
--- ½Å±¾ID
+-- è„šæœ¬ID
 x666898_g_scriptId	= 666898
 --**********************************
---½»»¥Èë¿Ú
+--äº¤äº’å…¥å£
 --**********************************
 function x666898_OnCharacterTimer( sceneId, objId, dataId, uTime )
-	-- Ö»ÓĞScriptGlobalÖĞ¿ªÆôµÄGMÔÚÏß¹¤¾ß²Å»áÉúĞ§
+	-- åªæœ‰ScriptGlobalä¸­å¼€å¯çš„GMåœ¨çº¿å·¥å…·æ‰ä¼šç”Ÿæ•ˆ
 	if GMDATA_ISOPEN_GMTOOLS == 1 then
-		-- Í¨¹ıAPI»ñÈ¡×îĞÂÊı¾İĞ´Èëµ½SecondsTimerData.txt
-		execute("cd /home/tlbb/Server/SecondsTimer;wget -q 'http://ÄãµÄÓòÃû»òÕßIP/index.php?privateKey=ÄãÔÚPHPÎÄ¼şÖĞÅäÖÃµÄÑéÖ¤KEY' -O SecondsTimerData.txt")
-		-- Ã¿´ÎÖ»»ñÈ¡µÚÒ»ĞĞÊı¾İ
+		-- é€šè¿‡APIè·å–æœ€æ–°æ•°æ®å†™å…¥åˆ°SecondsTimerData.txt
+		execute("cd /home/tlbb/Server/SecondsTimer;wget -q 'http://ä½ çš„åŸŸåæˆ–è€…IP/index.php?privateKey=ä½ åœ¨PHPæ–‡ä»¶ä¸­é…ç½®çš„éªŒè¯KEY' -O SecondsTimerData.txt")
+		-- æ¯æ¬¡åªè·å–ç¬¬ä¸€è¡Œæ•°æ®
 		local SecondsTimerData = openfile("./SecondsTimer/SecondsTimerData.txt", "r")
 		local DataStr = read(SecondsTimerData, "*l")
 		closefile(SecondsTimerData)
-		-- Ö´ĞĞÏà¹ØÊÂ¼ş¿ªÊ¼
+		-- æ‰§è¡Œç›¸å…³äº‹ä»¶å¼€å§‹
 		if DataStr ~= nil then
 			local _,_,id,event,param1,param2,param3,param4 = strfind(DataStr,"(.*),(.*),(.*),(.*),(.*),(.*)")
-			if event == 'SendGlobalNews' then -- ·¢¹«¸æ
+			if event == 'SendGlobalNews' then -- å‘å…¬å‘Š
 				x666898_SendGlobalNews(sceneId, param1)
 			end
-			if event == 'GivePlayerItem' then -- ·¢ÎïÆ·
+			if event == 'GivePlayerItem' then -- å‘ç‰©å“
 				x666898_GivePlayerItem(sceneId, param1, param2, param3)
 			end
-			if event == 'SetPlayerLevel' then -- ÉèÖÃÈËÎïµÈ¼¶
+			if event == 'SetPlayerLevel' then -- è®¾ç½®äººç‰©ç­‰çº§
 				x666898_SetPlayerLevel(sceneId, param1, param2)
 			end
-			if event == 'GivePlayerYuanBao' then -- ·¢Ôª±¦
+			if event == 'GivePlayerYuanBao' then -- å‘å…ƒå®
 				x666898_GivePlayerYuanBao(sceneId, param1, param2)
 			end
 		end
 		if DataStr ~= nil then
 			local _,_,id,event,param1,param2,param3,param4 = strfind(DataStr,"(.*),(.*),(.*),(.*),(.*),(.*)")
 			local SecondsTimerLog = openfile("./SecondsTimer/SecondsTimerLog.txt", "a+")
-			write(SecondsTimerLog, "["..date('%Y-%m-%d %H:%M:%S').."][id]:"..id..",[Event]£º"..event..",[Param1]£º"..param1..",[Param2]£º"..param2..",[Param3]£º"..param3..",[Param4]£º"..param4.."\n")
+			write(SecondsTimerLog, "["..date('%Y-%m-%d %H:%M:%S').."][id]:"..id..",[Event]ï¼š"..event..",[Param1]ï¼š"..param1..",[Param2]ï¼š"..param2..",[Param3]ï¼š"..param3..",[Param4]ï¼š"..param4.."\n")
 			closefile(SecondsTimerLog)
 		end
-		-- Ö´ĞĞÏàÊÂ¼ş½áÊø
+		-- æ‰§è¡Œç›¸äº‹ä»¶ç»“æŸ
 	end
 end
 
 --**********************************
---¸ù¾İÍæ¼ÒÃû³Æ»ñµÃÖ÷³Ç³¡¾°ÄÚÖ¸¶¨Íæ¼ÒµÄobjId [ºóĞø¸üĞÂ]
+--æ ¹æ®ç©å®¶åç§°è·å¾—ä¸»åŸåœºæ™¯å†…æŒ‡å®šç©å®¶çš„objId [åç»­æ›´æ–°]
 --**********************************
 function x666898_GetScenePlayerObjId(PlayerName)
 	local sceneIdList = {
-		0, -- ÂåÑô
-		1, -- ËÕÖİ
-		2, -- ´óÀí
-		186, -- Â¥À¼
+		0, -- æ´›é˜³
+		1, -- è‹å·
+		2, -- å¤§ç†
+		186, -- æ¥¼å…°
 	}
 	local sId = ''
 	local objId = ''
 
-	--¼ì²âÍæ¼ÒÊÇ·ñÔÚÄ³¸ö³¡¾°
+	--æ£€æµ‹ç©å®¶æ˜¯å¦åœ¨æŸä¸ªåœºæ™¯
 	for _, tmpSceneId in sceneIdList do
 		local RenNum = LuaFnGetCopyScene_HumanCount(tmpSceneId)
 		for i=0, RenNum-1 do
-			local EveryBodyID = LuaFnGetCopyScene_HumanObjId(tmpSceneId, i)	  --È¡µÃµ±Ç°³¡¾°ÀïÈËµÄobjId
+			local EveryBodyID = LuaFnGetCopyScene_HumanObjId(tmpSceneId, i)	  --å–å¾—å½“å‰åœºæ™¯é‡Œäººçš„objId
 			if GetName(tmpSceneId, EveryBodyID) == PlayerName then
 				sId = tmpSceneId
 				objId = EveryBodyID
@@ -70,7 +70,7 @@ function x666898_GetScenePlayerObjId(PlayerName)
 			break
 		end
 	end
-	
+
 	if objId == nil then
 		objId = 0
 	end
@@ -80,58 +80,58 @@ end
 
 
 --**********************************
---ÉèÖÃµÈ¼¶
+--è®¾ç½®ç­‰çº§
 --**********************************
 function x666898_SetPlayerLevel(sceneId, PlayerName, level)
 	local RenNum = LuaFnGetCopyScene_HumanCount( sceneId )
 	for i=0, RenNum-1 do
-		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --È¡µÃµ±Ç°³¡¾°ÀïÈËµÄobjId
+		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --å–å¾—å½“å‰åœºæ™¯é‡Œäººçš„objId
 		if GetName(sceneId, EveryBodyID) == PlayerName then
 			SetLevel(sceneId, EveryBodyID, level)
 			LuaFnSendSpecificImpactToUnit(sceneId, EveryBodyID, EveryBodyID, EveryBodyID, 49, 0)
-			x666898_tips(sceneId, EveryBodyID, '¹ÜÀíÔ±ÎªÄúÌáÉıµÈ¼¶³É¹¦£¡')
+			x666898_tips(sceneId, EveryBodyID, 'ç®¡ç†å‘˜ä¸ºæ‚¨æå‡ç­‰çº§æˆåŠŸï¼')
 			break
 		end
 	end
 end
 
 --**********************************
---¸øÓèÍæ¼ÒÎïÆ·
+--ç»™äºˆç©å®¶ç‰©å“
 --**********************************
 function x666898_GivePlayerItem(sceneId, PlayerName, itemId, num)
 	local RenNum = LuaFnGetCopyScene_HumanCount( sceneId )
 	for i=0, RenNum-1 do
-		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --È¡µÃµ±Ç°³¡¾°ÀïÈËµÄobjId
+		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --å–å¾—å½“å‰åœºæ™¯é‡Œäººçš„objId
 		if GetName(sceneId, EveryBodyID) == PlayerName then
 			BeginAddItem(sceneId)
-				AddItem(sceneId, itemId, num)
+			AddItem(sceneId, itemId, num)
 			EndAddItem(sceneId,EveryBodyID)
 			AddItemListToHuman(sceneId,EveryBodyID)
 			LuaFnSendSpecificImpactToUnit(sceneId, EveryBodyID, EveryBodyID, EveryBodyID, 49, 0)
-			x666898_tips(sceneId, EveryBodyID, '¹ÜÀíÔ±ÎªÄú·¢·ÅÎïÆ·£¬ÇëÔÚ±³°üÖĞ²éÊÕ£¡')
+			x666898_tips(sceneId, EveryBodyID, 'ç®¡ç†å‘˜ä¸ºæ‚¨å‘æ”¾ç‰©å“ï¼Œè¯·åœ¨èƒŒåŒ…ä¸­æŸ¥æ”¶ï¼')
 			break
 		end
 	end
 end
 
 --**********************************
---¸øÓèÍæ¼ÒÔª±¦
+--ç»™äºˆç©å®¶å…ƒå®
 --**********************************
 function x666898_GivePlayerYuanBao(sceneId, PlayerName, yuanbaoNum)
 	local RenNum = LuaFnGetCopyScene_HumanCount( sceneId )
 	for i=0, RenNum-1 do
-		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --È¡µÃµ±Ç°³¡¾°ÀïÈËµÄobjId
+		local EveryBodyID = LuaFnGetCopyScene_HumanObjId( sceneId, i )	  --å–å¾—å½“å‰åœºæ™¯é‡Œäººçš„objId
 		if GetName(sceneId, EveryBodyID) == PlayerName then
 			YuanBao(sceneId,EveryBodyID,-1,1,yuanbaoNum)
 			LuaFnSendSpecificImpactToUnit(sceneId, EveryBodyID, EveryBodyID, EveryBodyID, 49, 0)
-			x666898_tips(sceneId, EveryBodyID, '¹ÜÀíÔ±ÎªÄú·¢·ÅÔª±¦£º'..yuanbaoNum..' ,Çë×¢Òâ²éÊÕ£¡')
+			x666898_tips(sceneId, EveryBodyID, 'ç®¡ç†å‘˜ä¸ºæ‚¨å‘æ”¾å…ƒå®ï¼š'..yuanbaoNum..' ,è¯·æ³¨æ„æŸ¥æ”¶ï¼')
 			break
 		end
 	end
 end
 
 --**********************************
---·¢ËÍÈ«¾Ö¹ö¶¯¹«¸æ
+--å‘é€å…¨å±€æ»šåŠ¨å…¬å‘Š
 --**********************************
 function x666898_SendGlobalNews(sceneId, notice)
 	local noticeFormat = format ("@*;SrvMsg;SCA:"..notice)
@@ -139,11 +139,11 @@ function x666898_SendGlobalNews(sceneId, notice)
 end
 
 --**********************************
---ÌáÊ¾º¯Êı
+--æç¤ºå‡½æ•°
 --**********************************
 function x666898_tips(sceneId, selfId, Tip)
 	BeginEvent(sceneId)
-		AddText(sceneId, Tip)
+	AddText(sceneId, Tip)
 	EndEvent(sceneId)
 	DispatchMissionTips(sceneId, selfId)
 end
