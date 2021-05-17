@@ -202,7 +202,7 @@ data_backup()
 {
     #备份数据库
     crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"` | grep -v grep |wc -l`
-    if [ $crontabCount = 0 ];then
+    if [ $crontabCount -eq 0 ];then
         (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"``docker ps --format "{{.Names}}" | grep "tlmysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
     fi
 
@@ -211,7 +211,7 @@ data_backup()
 
     #备份服务端
     crontabCount=`crontab -l | grep `docker ps --format "{{.Names}}" | grep "server"` | grep -v grep |wc -l`
-    if [ $crontabCount -e 0 ];then
+    if [ $crontabCount -eq 0 ];then
         (echo "0 */1 * * * sh  > /dev/null 2>&1 &"; crontab -l) | crontab
     fi
 }

@@ -29,7 +29,7 @@ CREATE TABLE `t_ability` (
   `isvalid` int(11) DEFAULT '1',
   PRIMARY KEY (`aid`),
   KEY `Index_ab_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_ability
@@ -128,7 +128,7 @@ CREATE TABLE `t_char` (
   KEY `Index_char_accname` (`accname`),
   KEY `Index_char_level` (`level`,`exp`),
   KEY `Index_char_yuanbao` (`yuanbao`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_char
@@ -152,7 +152,7 @@ CREATE TABLE `t_charextra` (
   `leagueid` int(11) NOT NULL DEFAULT '-1',
   `moneyjz` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_charextra
@@ -169,7 +169,7 @@ CREATE TABLE `t_city` (
   `isvalid` int(11) NOT NULL,
   PRIMARY KEY (`aid`),
   KEY `Index_city_poolid` (`poolid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_city
@@ -195,7 +195,7 @@ CREATE TABLE `t_city_building` (
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_citybd_poolid` (`poolid`,`bdtype`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_city_building
@@ -235,7 +235,7 @@ CREATE TABLE `t_city_info` (
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_cityinfo_pooid` (`poolid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_city_info
@@ -529,7 +529,7 @@ CREATE TABLE `t_city_new` (
   `foundtime` int(11) NOT NULL DEFAULT '0',
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`poolid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_city_new
@@ -804,7 +804,7 @@ CREATE TABLE `t_crc32` (
   `server` int(11) NOT NULL,
   PRIMARY KEY (`aid`),
   KEY `Index_crc_charguid` (`charguid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_crc32
@@ -823,7 +823,7 @@ CREATE TABLE `t_cshop` (
   `cshopid` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_cshop_PoolId` (`worldid`,`serverid`,`poolid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_cshop
@@ -848,7 +848,7 @@ CREATE TABLE `t_cshopitem` (
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_cshopitem_cshopid` (`cshopid`,`cshoppos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_cshopitem
@@ -875,7 +875,7 @@ CREATE TABLE `t_findfriendad` (
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_pcre_pindex` (`poolid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_findfriendad
@@ -891,7 +891,7 @@ CREATE TABLE `t_general_set` (
   `nVal` int(11) DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_general_set_Index` (`sKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_general_set
@@ -911,7 +911,7 @@ CREATE TABLE `t_global` (
   `poolid` int(11) NOT NULL,
   `data1` int(11) NOT NULL,
   PRIMARY KEY (`poolid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_global
@@ -958,7 +958,7 @@ CREATE TABLE `t_guild` (
   `lqltime` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_guild_gguild` (`guildid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_guild
@@ -1017,7 +1017,7 @@ CREATE TABLE `t_guild_new` (
   `week_fal2` int(11) NOT NULL DEFAULT '0',
   `week_fal3` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`guildid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_guild_new
@@ -1049,7 +1049,7 @@ CREATE TABLE `t_guild_user` (
   `lastdowntime` int(11) NOT NULL,
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_gusr_guildpos` (`guildid`,`pos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_guild_user
@@ -1066,7 +1066,7 @@ CREATE TABLE `t_impact` (
   `dbversion` int(11) DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_impact_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_impact
@@ -1112,7 +1112,7 @@ CREATE TABLE `t_iteminfo` (
   UNIQUE KEY `Index_it_charguid` (`charguid`,`pos`),
   KEY `Index_it_itemguid` (`guid`,`world`,`server`),
   KEY `Index_iteminfo_itemtype` (`itemtype`,`isvalid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_iteminfo
@@ -1129,7 +1129,7 @@ CREATE TABLE `t_itemkey` (
   `serial` int(11) NOT NULL,
   PRIMARY KEY (`aid`),
   KEY `Index_itk_sid` (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_itemkey
@@ -1197,7 +1197,7 @@ CREATE TABLE `t_league` (
   `applynum` int(11) NOT NULL,
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`leagueid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_league
@@ -1213,7 +1213,7 @@ CREATE TABLE `t_league_apply` (
   `applyguildid` int(11) NOT NULL,
   `isvalid` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `Index_league_apply_id` (`leagueid`,`applypos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_league_apply
@@ -1230,7 +1230,7 @@ CREATE TABLE `t_league_usr` (
   `jointime` int(11) NOT NULL,
   `isvalid` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `Index_league_usr_id` (`leagueid`,`guildpos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_league_usr
@@ -1250,7 +1250,7 @@ CREATE TABLE `t_mail` (
   `isvalid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_mail_mail` (`pindex`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_mail
@@ -1278,7 +1278,7 @@ CREATE TABLE `t_mission` (
   `isvalid` int(11) DEFAULT '1',
   PRIMARY KEY (`aid`),
   KEY `Index_mi_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_mission
@@ -1337,7 +1337,7 @@ CREATE TABLE `t_pet` (
   `dataversion` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_Pet_Charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pet
@@ -1355,7 +1355,7 @@ CREATE TABLE `t_petcreate` (
   `dataversion` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_pcre_pindex` (`pindex`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_petcreate
@@ -1396,7 +1396,7 @@ CREATE TABLE `t_pshop` (
   KEY `Index_pshop_shopguid` (`shopguid`),
   KEY `Index_pshop_sidpid` (`sid`,`poolid`),
   KEY `Index_pshop_ownerguid` (`ownerguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop
@@ -1437,7 +1437,7 @@ CREATE TABLE `t_pshop_new` (
   KEY `Index_pshop_new_shopguid` (`shopguid`),
   KEY `Index_pshop_new_sidpid` (`sid`,`poolid`),
   KEY `Index_pshop_new_ownerguid` (`ownerguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop_new
@@ -1458,7 +1458,7 @@ CREATE TABLE `t_pshop_stall` (
   `Buy_StlRsv` varchar(50) NOT NULL,
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_pshop_stall_ShpStlIndex` (`shopguid`,`stallid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop_stall
@@ -1509,7 +1509,7 @@ CREATE TABLE `t_pshop_stall_buy` (
   `Itm_maxgemid` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_pshop_stall_buy_ShpStlUntIndex` (`shopguid`,`stallid`,`stallunitid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop_stall_buy
@@ -1558,7 +1558,7 @@ CREATE TABLE `t_pshop_stall_itm` (
   `Itm_maxgemid` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_pshop_stall_itm_ShpStlUntIndex` (`shopguid`,`stallid`,`stallunitid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop_stall_itm
@@ -1621,7 +1621,7 @@ CREATE TABLE `t_pshop_stall_pet` (
   `Pet_us_reserve` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`aid`),
   UNIQUE KEY `Index_pshop_stall_pet_ShpStlUntIndex` (`shopguid`,`stallid`,`stallunitid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_pshop_stall_pet
@@ -1643,7 +1643,7 @@ CREATE TABLE `t_relation` (
   `dbversion` int(11) DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_re_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_relation
@@ -1662,7 +1662,7 @@ CREATE TABLE `t_skill` (
   `isvalid` int(11) DEFAULT NULL,
   PRIMARY KEY (`aid`),
   KEY `Index_sk_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_skill
@@ -1675,7 +1675,7 @@ DROP TABLE IF EXISTS `t_var`;
 CREATE TABLE `t_var` (
   `maxcharguid` int(11) NOT NULL,
   PRIMARY KEY (`maxcharguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_var
@@ -1696,7 +1696,7 @@ CREATE TABLE `t_xfallexp` (
   `id6all` int(11) NOT NULL,
   `id7all` int(11) NOT NULL,
   PRIMARY KEY (`xflv`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_xfallexp
@@ -1834,7 +1834,7 @@ CREATE TABLE `t_xinfa` (
   `dbversion` int(11) DEFAULT '0',
   PRIMARY KEY (`aid`),
   KEY `Index_xinfa_charguid` (`charguid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of t_xinfa
