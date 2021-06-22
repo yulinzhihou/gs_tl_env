@@ -1,0 +1,44 @@
+# 安装环境版本
+version=v2.0.0
+update=2021-06-22
+# 时区
+timezone=Asia/Shanghai
+# docker-compose 版本
+DOCKER_COMPOSER_VERSION=1.29.2
+# 环境源码目录
+GS_PROJECT="/root/.tlgame"
+# 离线包上传路径以及名称
+OFFLINE_TAR="/root/gs_tl_offline.tar.gz"
+# 宿主机器与容器共享的文件夹，挂载卷
+SHARE_DIR="/tlgame"
+# 容器重启
+RESTART="always"
+# 默认验证端口
+BILLING_DEFAULT_PORT=21818
+# 默认数据库端口
+TL_MYSQL_DEFAULT_PORT=33061
+# 默认服务端登录网关端口
+LOGIN_DEFAULT_PORT=13580
+# 默认服务端游戏网关端口
+SERVER_DEFAULT_PORT=15680
+# 默认服务端网站访问端口
+WEB_DEFAULT_PORT=58080
+# 默认数据库密码
+TL_MYSQL_DEFAULT_PASSWORD=123456
+
+# billing 验证端口
+BILLING_PORT=21818
+# mysql 数据库端口
+TL_MYSQL_PORT=33061
+# 服务端登录网关端口
+LOGIN_PORT=13580
+# 服务端游戏网关端口
+SERVER_PORT=15680
+# 服务端网站端口
+WEB_DEFAULT_PORT=58080
+# mysql 数据库 root 用户密码
+TL_MYSQL_PASSWORD=123456
+# mysql 备份路径
+TLMYSQL_PATH="/tlgame/backup/"
+# 服务端在宿主主机路径
+TLBB_PATH="/tlgame/tlbb"
