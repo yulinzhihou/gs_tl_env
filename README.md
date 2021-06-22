@@ -66,7 +66,6 @@ setini
 ```
 
 - 第八步：开启服务端，等待结果
-  
 
 ```bash
 runtlbb
@@ -174,5 +173,6 @@ cd ~/.tlgame/gs && cp env-example .env && source ~/.tlgame/gs/scripts/envfile.sh
 ### 七、最后有如果感觉项目对你有点帮助，请支持一下我们
 
 -   环境配套对应的产品效果  [**GS游享网**](https://gsgameshare.com)
-
 -   技术交流群：826717146
+-   技术交流群链接：<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=7-xH1POfCRL4fYw6lJE5vNPHdjFrX4kG&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="技术整合研究所" title="技术整合研究所"></a>
+-   鉴于经常搜索不到群号，特提供技术交流群扫码![](./qqqun.png)
