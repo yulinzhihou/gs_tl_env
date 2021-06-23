@@ -47,6 +47,7 @@ do_install_docker() {
     if [ $? -ne 0 ]; then
       sudo groupadd docker
       sudo usermod -aG docker ${USER}
+      sudo gpasswd -a ${USER} docker
     fi
 
     docker --info >& /dev/null

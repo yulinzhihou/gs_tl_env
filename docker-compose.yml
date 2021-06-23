@@ -6,6 +6,7 @@ services:
     build:
       context: ./services/server
       dockerfile: Dockerfile
+    container_name: tlserver
     volumes:
       - "${SHARED_DIR}/:/home"
     ports:
@@ -14,12 +15,15 @@ services:
     restart: ${RESTART}
     links:
       - tlmysql
-      - web
+      - nginx
+      - php
+      - redis
   # Database
   tlmysql:
     build:
       context: ./services/tlmysql
       dockerfile: Dockerfile
+    container_name: tlmysql
     volumes:
       - "${SHARED_DIR}/tlmysql/:/var/lib/mysql"
     ports:
@@ -29,13 +33,66 @@ services:
       MYSQL_DATABASE: "tlbbdb"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     restart: ${RESTART}
-  # Web Server
-  web:
+
+  nginx:
     build:
-      context: ./services/web
-      dockerfile: Dockerfile
-    volumes:
-    - "${SHARED_DIR}/www/:/var/www"
+      context: ./services/nginx
+      args:
+        NGINX_VERSION: nginx:${NGINX_VERSION}
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        NGINX_INSTALL_APPS: ${NGINX_INSTALL_APPS}
+    container_name: nginx
     ports:
-    - "${WEB_PORT}:80"
-    restart: ${RESTART}
+      - "${WEB_PORT}:80"
+      - "${WEB_HTTPS_PORT}:443"
+    volumes:
+      - ${SHARED_DIR}/www/:/www/:rw
+      - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
+      - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
+      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
+      - ${NGINX_FASTCGI_PHP_CONF}:/etc/nginx/fastcgi-php.conf:ro
+      - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params:ro
+      - ${NGINX_LOG_DIR}:/var/log/nginx/:rw
+    environment:
+      TZ: "$TZ"
+    restart: always
+    links:
+      - php
+  
+  php:
+    build:
+      context: ./services/php
+      args:
+        PHP_VERSION: php:${PHP_VERSION}-fpm-alpine
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+        PHP_EXTENSIONS: ${PHP_EXTENSIONS}
+        TZ: "$TZ"
+    container_name: php
+    # extra_hosts:
+    #   - "www.site1.com:php"
+    volumes:
+      - ${SHARED_DIR}/www/:/www/:rw
+      - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    links:
+      - tlmysql
+      - redis
+      - server
+
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    ports:
+      - "${REDIS_HOST_PORT}:6379"
+    volumes:
+      - ${REDIS_CONF_FILE}:/etc/redis.conf:ro
+      - ${DATA_DIR}/redis:/data/:rw
+    restart: always
+    entrypoint: ["redis-server", "/etc/redis.conf"]
+    environment:
+      TZ: "$TZ"

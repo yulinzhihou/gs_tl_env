@@ -1,0 +1,6 @@
+[fasttrack]
+name=CentOS-6 - fasttrack
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/fasttrack/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6

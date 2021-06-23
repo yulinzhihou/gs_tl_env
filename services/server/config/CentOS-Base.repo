@@ -1,40 +1,47 @@
-[C6.10-base]
-name=CentOS-6.10 - Base
-baseurl=http://mirrors.aliyun.com/centos-vault/6.10/os/$basearch/
-gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-enabled=1
-metadata_expire=never
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the 
+# remarked out baseurl= line instead.
+#
+#
 
-[C6.10-updates]
-name=CentOS-6.10 - Updates
-baseurl=http://mirrors.aliyun.com/centos-vault/6.10/updates/$basearch/
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/os/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-enabled=1
-metadata_expire=never
 
-[C6.10-extras]
-name=CentOS-6.10 - Extras
-baseurl=http://mirrors.aliyun.com/centos-vault/6.10/extras/$basearch/
+#released updates 
+[updates]
+name=CentOS-$releasever - Updates
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/updates/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-enabled=1
-metadata_expire=never
 
-[C6.10-contrib]
-name=CentOS-6.10 - Contrib
-baseurl=http://mirrors.aliyun.com/centos-vault/6.10/contrib/$basearch/
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/extras/$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
 enabled=0
-metadata_expire=never
-
-[C6.10-centosplus]
-name=CentOS-6.10 - CentOSPlus
-baseurl=http://mirrors.aliyun.com/centos-vault/6.10/centosplus/$basearch/
-gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-enabled=0
-metadata_expire=never
 
+#contrib - packages by Centos Users
+[contrib]
+name=CentOS-$releasever - Contrib
+baseurl=http://mirrors.aliyun.com/centos-vault/centos/$releasever/contrib/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
