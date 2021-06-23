@@ -17,4 +17,4 @@ RUN if [ -z "${INSTALL_APPS##*,certbot,*}" ]; then \
         apk add --no-cache certbot; \
     fi
 
-WORKDIR /www
+WORKDIR /home/www

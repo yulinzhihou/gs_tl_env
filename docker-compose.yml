@@ -14,10 +14,10 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     restart: ${RESTART}
     links:
-      - tlmysql
-      - nginx
-      - php
-      - redis
+      - tlmysql:tlmysql
+      - nginx:nginx
+      - php:php
+      - redis:redis
   # Database
   tlmysql:
     build:
@@ -56,8 +56,6 @@ services:
     environment:
       TZ: "$TZ"
     restart: always
-    links:
-      - php
   
   php:
     build:
@@ -79,10 +77,6 @@ services:
     restart: always
     cap_add:
       - SYS_PTRACE
-    links:
-      - tlmysql
-      - redis
-      - server
 
   redis:
     image: redis:${REDIS_VERSION}
