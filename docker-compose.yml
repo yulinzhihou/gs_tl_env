@@ -34,7 +34,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     restart: ${RESTART}
 
-  nginx:
+  tlnginx:
     build:
       context: ./services/nginx
       args:
@@ -57,7 +57,7 @@ services:
       TZ: "$TZ"
     restart: always
   
-  php:
+  tlphp:
     build:
       context: ./services/php
       args:
@@ -73,12 +73,12 @@ services:
       - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       - ${PHP_LOG_DIR}:/var/log/php
-      - ${DATA_DIR}/composer:/tmp/composer
+      # - ${DATA_DIR}/composer:/tmp/composer
     restart: always
     cap_add:
       - SYS_PTRACE
 
-  redis:
+  tlredis:
     image: redis:${REDIS_VERSION}
     container_name: tlredis
     ports:
