@@ -12,6 +12,9 @@ File Encoding         : 65001
 
 Date: 2012-09-19 16:25:04
 */
+create database `web` default character set utf8 collate utf8_general_ci;
+ 
+use web;
 
 SET FOREIGN_KEY_CHECKS=0;
 
