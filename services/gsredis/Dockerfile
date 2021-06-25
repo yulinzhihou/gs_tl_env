@@ -1,4 +1,5 @@
-FROM 5.0.3-alpine
+ARG REDIS_VERSION
+FROM redis:${REDIS_VERSION}
 
 LABEL author="yulinzhihou@gmail.com" website="https://gsgameshare.com"
 
