@@ -34,7 +34,7 @@ services:
       MYSQL_DATABASE: "tlbbdb"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     restart: ${RESTART}
-
+  # WEBSERVER
   gsnginx:
     build:
       context: ./services/gsnginx
@@ -48,17 +48,12 @@ services:
       - "${WEB_HTTPS_PORT}:443"
     volumes:
       - ${SHARED_DIR}/www/:/www/:rw
-      - ${NGINX_SSL_CERTIFICATE_DIR}:/ssl:rw
-      - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
-      - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
-      - ${NGINX_FASTCGI_PHP_CONF}:/etc/nginx/fastcgi-php.conf:ro
-      - ${NGINX_FASTCGI_PARAMS}:/etc/nginx/fastcgi_params:ro
       # - ${NGINX_LOG_DIR}:/var/log/nginx/:rw
       - ${SHARED_DIR}/log/nginx/:/var/log/nginx/:rw
     environment:
       TZ: "$TZ"
     restart: always
-  
+  # PHP
   gsphp:
     build:
       context: ./services/gsphp
@@ -72,15 +67,13 @@ services:
     #   - "www.site1.com:php"
     volumes:
       - ${SHARED_DIR}/www/:/www/:rw
-      - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-      - ${PHP_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
       # - ${PHP_LOG_DIR}:/var/log/php
       - ${SHARED_DIR}/log/php/:/var/log/php
       # - ${DATA_DIR}/composer:/tmp/composer
     restart: always
     cap_add:
       - SYS_PTRACE
-
+  # NOSQL
   gsredis:
     build:
       context: ./services/gsredis

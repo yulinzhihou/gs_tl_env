@@ -1,20 +1,14 @@
-ARG NGINX_VERSION
-FROM ${NGINX_VERSION}
+FROM registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_nginx:v2.0.0
 
-ARG TZ
-ARG NGINX_VERSION
-ARG CONTAINER_PACKAGE_URL
-ARG NGINX_INSTALL_APPS
+# FROM nginx:1.21.0-alpine
 
-ENV INSTALL_APPS=",${NGINX_INSTALL_APPS},"
+# LABEL author="yulinzhihou" website="https://gsgameshare.com"
 
-RUN if [ "${CONTAINER_PACKAGE_URL}" != "" ]; then \
-        sed -i "s/dl-cdn.alpinelinux.org/${CONTAINER_PACKAGE_URL}/g" /etc/apk/repositories; \
-    fi
+# COPY ./conf.d/localhost.conf /etc/nginx/conf.d/localhost.conf
+# COPY ./fastcgi_params /etc/nginx/fastcgi_params
+# COPY ./fastcgi-php.conf /etc/nginx/fastcgi-php.conf
+# COPY ./nginx.conf /etc/nginx/nginx.conf
 
-RUN if [ -z "${INSTALL_APPS##*,certbot,*}" ]; then \
-        echo "---------- Install certbot ----------"; \
-        apk add --no-cache certbot; \
-    fi
+# RUN sed -i "s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g" /etc/apk/repositories;
 
-WORKDIR /home/www
+# WORKDIR /home/www

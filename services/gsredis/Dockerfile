@@ -1,8 +1,9 @@
-ARG REDIS_VERSION
-FROM ${REDIS_VERSION}
+FROM registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_redis:v2.0.0
 
-LABEL author="yulinzhihou@gmail.com" website="https://gsgameshare.com"
+# FROM redis:5.0.12
 
-COPY ./redis.conf /etc/
+# LABEL author="yulinzhihou@gmail.com" website="https://gsgameshare.com"
 
-ENTRYPOINT ["redis-server", "/etc/redis.conf"]
+# COPY ./redis.conf /etc/
+
+# ENTRYPOINT ["redis-server", "/etc/redis.conf"]

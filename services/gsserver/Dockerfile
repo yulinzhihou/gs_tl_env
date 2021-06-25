@@ -2,8 +2,7 @@ FROM registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_server:v2.0.1
 
 ##************以下是服务端镜像制作源码，本环境为了快速，已经将下面镜像打包，直接拉取，有兴趣的可以拿源码自己编***********************######
 # FROM centos:6.8
-# LABEL author="yulinzhihou"
-# LABEL website="https://gsgameshare.com"
+# LABEL author="yulinzhihou" website="https://gsgameshare.com"
 
 # WORKDIR /home/tlbb
 
