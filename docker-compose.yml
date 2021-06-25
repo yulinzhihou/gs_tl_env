@@ -3,9 +3,10 @@ version: '3'
 services:
   # Game server
   gsserver:
-    build:
-      context: ./services/gsserver
-      dockerfile: Dockerfile
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_server:v2.0.1
+    # build:
+    #   context: ./services/gsserver
+    #   dockerfile: Dockerfile
     container_name: gsserver
     volumes:
       - "${SHARED_DIR}/:/home"
@@ -21,9 +22,10 @@ services:
       - gsredis:gsredis
   # Database
   gsmysql:
-    build:
-      context: ./services/gsmysql
-      dockerfile: Dockerfile
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_mysql:v2.0.0
+    # build:
+    #   context: ./services/gsmysql
+    #   dockerfile: Dockerfile
     container_name: gsmysql
     volumes:
       - "${SHARED_DIR}/gsmysql/:/var/lib/mysql"
@@ -36,12 +38,13 @@ services:
     restart: ${RESTART}
   # WEBSERVER
   gsnginx:
-    build:
-      context: ./services/gsnginx
-      args:
-        NGINX_VERSION: nginx:${NGINX_VERSION}
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        NGINX_INSTALL_APPS: ${NGINX_INSTALL_APPS}
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_nginx:v2.0.0
+    # build:
+    #   context: ./services/gsnginx
+    #   args:
+    #     NGINX_VERSION: nginx:${NGINX_VERSION}
+    #     CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+    #     NGINX_INSTALL_APPS: ${NGINX_INSTALL_APPS}
     container_name: gsnginx
     ports:
       - "${WEB_PORT}:80"
@@ -55,13 +58,14 @@ services:
     restart: always
   # PHP
   gsphp:
-    build:
-      context: ./services/gsphp
-      args:
-        PHP_VERSION: php:${PHP_VERSION}-fpm-alpine
-        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-        PHP_EXTENSIONS: ${PHP_EXTENSIONS}
-        TZ: "$TZ"
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_php:v2.0.0
+    # build:
+    #   context: ./services/gsphp
+    #   args:
+    #     PHP_VERSION: php:${PHP_VERSION}-fpm-alpine
+    #     CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+    #     PHP_EXTENSIONS: ${PHP_EXTENSIONS}
+    #     TZ: "$TZ"
     container_name: gsnginx
     # extra_hosts:
     #   - "www.site1.com:php"
@@ -75,10 +79,11 @@ services:
       - SYS_PTRACE
   # NOSQL
   gsredis:
-    build:
-      context: ./services/gsredis
-      args:
-        REDIS_VERSION: redis:${REDIS_VERSION}
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_redis:v2.0.0
+    # build:
+    #   context: ./services/gsredis
+    #   args:
+    #     REDIS_VERSION: redis:${REDIS_VERSION}
     container_name: gsredis
     ports:
       - "${REDIS_HOST_PORT}:6379"
