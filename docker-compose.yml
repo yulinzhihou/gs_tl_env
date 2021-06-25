@@ -38,7 +38,7 @@ services:
     restart: ${RESTART}
   # WEBSERVER
   gsnginx:
-    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_nginx:v2.0.0
+    image: registry.cn-hangzhou.aliyuncs.com/yulinzhihou/gs_nginx:v2.0.1
     # build:
     #   context: ./services/gsnginx
     #   args:
