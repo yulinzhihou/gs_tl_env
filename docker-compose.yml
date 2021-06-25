@@ -66,7 +66,7 @@ services:
     #     CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
     #     PHP_EXTENSIONS: ${PHP_EXTENSIONS}
     #     TZ: "$TZ"
-    container_name: gsnginx
+    container_name: gsphp
     # extra_hosts:
     #   - "www.site1.com:php"
     volumes:
