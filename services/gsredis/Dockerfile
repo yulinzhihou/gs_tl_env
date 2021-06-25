@@ -1,5 +1,5 @@
 ARG REDIS_VERSION
-FROM redis:${REDIS_VERSION}
+FROM ${REDIS_VERSION}
 
 LABEL author="yulinzhihou@gmail.com" website="https://gsgameshare.com"
 
