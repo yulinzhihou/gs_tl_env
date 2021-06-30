@@ -2,7 +2,7 @@
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gs_tl_env.git
-# Date :  2021-02-01
+# Date :  2021-06-30
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 
 # 第一步：更新系统组件，安装docker,docker-composer
@@ -17,15 +17,9 @@ GSTL_DIR=$(dirname "`readlink -f $0`")
 pushd ${GSTL_DIR} > /dev/null
 
 # 加载配置
+. ./.env
 . ./include/color.sh
-. ./version.txt
 . ./include/check_os.sh
-
-#随机生成密码字符串
-# dbrootpwd=`< /dev/urandom tr -dc A-Za-z0-9 | head -c8`
-# dbpostgrespwd=`< /dev/urandom tr -dc A-Za-z0-9 | head -c8`
-# dbmongopwd=`< /dev/urandom tr -dc A-Za-z0-9 | head -c8`
-# xcachepwd=`< /dev/urandom tr -dc A-Za-z0-9 | head -c8`
 
 # 帮助信息
 show_help() {
@@ -52,6 +46,7 @@ do_install_docker() {
 
     docker --info >& /dev/null
     if [ $? -ne 0 ]; then
+        # 制作的国内镜像安装脚本
         curl -sSL https://gsgameshare.com/gsdocker | bash -s docker --mirror Aliyun
         if [ ! -e "/etc/docker" ]; then
             sudo mkdir -p /etc/docker
@@ -128,6 +123,8 @@ data_backup(){
 
 # 安装整合
 do_install() {
+  set_timezone
+  [ $? == 0 ] && echo -e "${CBLUE} set_timezone success!! ${CEND}" || { echo -e "${CRED} set_timezone failed!! ;${CEND}"; exit 1;}
   do_install_docker
   [ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit 1;}
   set_command
@@ -326,6 +323,7 @@ if [ ${ARG_NUM} == 0 ]; then
 
 fi
 
+# 数据交换目录是否存在
 [ -d ${SHARE_DIR} ] && chmod 755 ${SHARE_DIR}
 
 # 调用系统组件
@@ -341,8 +339,9 @@ IPADDR_COUNTRY=$(./include/get_ipaddr_state.py ${PUBLIC_IPADDR})
 # 获取系统内存，交换内存
 . ./include/memory.sh
 
-# Check binary dependencies packages
+# 检查依赖安装包
 . ./include/check_sw.sh
+# 根据不同版本的系统，安装不同的
 case "${LikeOS}" in
   "CentOS")
     installDepsCentOS 2>&1 | tee ${GS_PROJECT}/install.log

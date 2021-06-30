@@ -24,9 +24,9 @@ FILENAME='gstlenv.tar.gz'
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号
-VERSION='v1.0.0'
+VERSION='v2.0.0'
 #更新时间
-UPDATE='2021-06-21'
+UPDATE='2021-06-30'
 # 授权
 login(){
     # 实现shell请求登录接口

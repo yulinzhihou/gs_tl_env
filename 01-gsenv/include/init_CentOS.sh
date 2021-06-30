@@ -1,9 +1,9 @@
 #!/bin/bash
-# Close SELINUX
+# 关闭selinux
 setenforce 0
 sed -i 's/^SELINUX=.*$/SELINUX=disabled/' /etc/selinux/config
 
-# Custom profile
+# 自定义环境变量
 cat > /etc/profile.d/tlgs_profile.sh << EOF
 HISTSIZE=10000
 PS1="\[\e[37;40m\][\[\e[32;40m\]\u\[\e[37;40m\]@\h \[\e[35;40m\]\W\[\e[0m\]]\\\\$ "
@@ -24,7 +24,7 @@ EOF
 PROMPT_COMMAND='{ msg=\$(history 1 | { read x y; echo \$y; });logger "[euid=\$(whoami)]":\$(who am i):[\`pwd\`]"\$msg"; }'
 EOF
 
-# /etc/security/limits.conf
+# 安装限制
 [ -e /etc/security/limits.d/*nproc.conf ] && rename nproc.conf nproc.conf_bk /etc/security/limits.d/*nproc.conf
 sed -i '/^# End of file/,$d' /etc/security/limits.conf
 cat >> /etc/security/limits.conf <<EOF
@@ -35,20 +35,20 @@ cat >> /etc/security/limits.conf <<EOF
 * hard nofile 1000000
 EOF
 
-# /etc/hosts
+# HOST
 [ "$(hostname -i | awk '{print $1}')" != "127.0.0.1" ] && sed -i "s@127.0.0.1.*localhost@&\n127.0.0.1 $(hostname)@g" /etc/hosts
 
-# Set timezone
+# 设置时区
 rm -rf /etc/localtime
 ln -s /usr/share/zoneinfo/${timezone} /etc/localtime
 
-# Set DNS
+# 设置DNS
 #cat > /etc/resolv.conf << EOF
 #nameserver 114.114.114.114
 #nameserver 8.8.8.8
 #EOF
 
-# ip_conntrack table full dropping packets
+# 防火墙
 [ ! -e "/etc/sysconfig/modules/iptables.modules" ] && { echo -e "modprobe nf_conntrack\nmodprobe nf_conntrack_ipv4" > /etc/sysconfig/modules/iptables.modules; chmod +x /etc/sysconfig/modules/iptables.modules; }
 modprobe nf_conntrack
 modprobe nf_conntrack_ipv4
@@ -105,7 +105,7 @@ if [ -e "$(which ntpdate)" ]; then
   [ ! -e "/var/spool/cron/root" -o -z "$(grep 'ntpdate' /var/spool/cron/root)" ] && { echo "*/20 * * * * $(which ntpdate) -u pool.ntp.org > /dev/null 2>&1" >> /var/spool/cron/root;chmod 600 /var/spool/cron/root; }
 fi
 
-# iptables
+# 防火墙及规则
 if [ "${iptables_flag}" == 'y' ]; then
   if [ -e "/etc/sysconfig/iptables" ] && [ -n "$(grep '^:INPUT DROP' /etc/sysconfig/iptables)" -a -n "$(grep 'NEW -m tcp --dport 22 -j ACCEPT' /etc/sysconfig/iptables)" -a -n "$(grep 'NEW -m tcp --dport 80 -j ACCEPT' /etc/sysconfig/iptables)" ]; then
     IPTABLES_STATUS=yes
