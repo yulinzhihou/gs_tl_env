@@ -63,7 +63,11 @@ version() {
 
 
 download () {
-wget -O ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz 
+# wget -O ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz 
+# gs env 服务器环境 ，组件
+wget -O ${FILENAME} https://gsgamesahre.com/gstl.tar.gz 
+# gs docker 镜像
+wget -O ${FILENAME} https://gsgamesahre.com/gsdocker.tar.gz 
 tar zxf ${FILENAME} && mv gs_tl_env ${ENVDIR}
 }
 

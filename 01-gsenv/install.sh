@@ -84,16 +84,16 @@ set_command() {
 }
 
 # 启动环境
-docker_run () {
-    if [ ! -e ${OFFLINE_TAR} ]; then
-      # 在线镜像拉取
-      . ${GS_PROJECT}/.env
-      cd ${GS_PROJECT} && docker-compose up -d
-    else
-      # 离线版本。暂时没做
-      docker import /root/gs_tl_offline.tar.gz
-    fi
-}
+# docker_run () {
+#     if [ ! -e ${OFFLINE_TAR} ]; then
+#       # 在线镜像拉取
+#       . ${GS_PROJECT}/.env
+#       cd ${GS_PROJECT} && docker-compose up -d
+#     else
+#       # 离线版本。暂时没做
+#       docker import /root/gs_tl_offline.tar.gz
+#     fi
+# }
 
 # 设置服务器时间
 set_timezone() {
@@ -129,10 +129,10 @@ do_install() {
   [ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit 1;}
   set_command
   [ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit 1;}
-  docker_run
-  [ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit 1;}
-  data_backup
-  [ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit 1;}
+  # docker_run
+  # [ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit 1;}
+  # data_backup
+  # [ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit 1;}
 }
 
 # 安装完成提示信息
@@ -141,14 +141,11 @@ show_install_msg() {
   #######################################################################
   #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
   #       \e[44m GS游享网 [https://gsgameshare.com] 专用环境安装成功!\e[0m
-  #       1.数据库端口: \t`[ ! -z ${TL_MYSQL_PORT} ] && echo ${TL_MYSQL_PORT} || echo 33061`
-  #       2.数据库密码: \t`[ ! -z ${TL_MYSQL_PASSWORD} ] && echo ${TL_MYSQL_PASSWORD} || echo 123456`
-  #       3.登录网关端口: `[ ! -z ${LOGIN_PORT} ] && echo ${LOGIN_PORT} || echo 13580`
-  #       4.游戏网关端口: `[ ! -z ${SERVER_PORT} ] && echo ${SERVER_PORT} || echo 15680`
-  #       5.网站端口: \t`[ ! -z ${WEB_PORT} ] && echo ${WEB_PORT} || echo 58080`
-  #       6.验证端口: \t`[ ! -z ${BILLING_PORT} ] && echo ${BILLING_PORT} || echo 21818`
-  #       7.技术交流群：\t826717146
-  #       8.更多命令请运行: gs 查看
+  #       安装环境需要移步论坛注册账号才能正常安装，只需要注册账号即可
+  #       1.论坛客服QQ:\t1303588722
+  #       2.论坛有对应的环境教程，有不懂的可以进论坛--原创教程
+  #       3.技术交流群:\t826717146
+  #       4.环境还未安装完成，请手动执行 gstl
   #######################################################################
   ${CEND}"
   endTime=`date +%s`
@@ -181,18 +178,19 @@ if [ ${ARG_NUM} == 0 ]; then
     fi
   fi
   # 检测防火墙
-  while :; do echo
+  while :; do
     read -e -p "是否需要开启防火墙? [是y/否n]: " iptables_flag
     if [[ ! ${iptables_flag} =~ ^[y,n]$ ]]; then
-      echo "${CWARNING}输入错误! 请输入 'y' 或者 'n'${CEND}"
-    else
+      echo -e "${CWARNING}输入错误! 请输入 'y' 或者 'n'${CEND}"
       break
+    else
+      exit;
     fi
   done
   # 配置BILLING_PORT
   while :; do echo
     read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
-    IS_MODIFY=${IS_MODIFY:-'n'}
+    # IS_MODIFY=${IS_MODIFY:-'n'}
     if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
         echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
     else
