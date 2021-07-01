@@ -154,42 +154,6 @@ show_install_msg() {
 }
 
 ##################################################################
-# 开始调用
-ARG_NUM=$#
-if [ ${ARG_NUM} == 0 ]; then
-  # Use default SSH port 22. If you use another SSH port on your server
-  if [ -e "/etc/ssh/sshd_config" ]; then
-    [ -z "`grep ^Port /etc/ssh/sshd_config`" ] && now_ssh_port=22 || now_ssh_port=`grep ^Port /etc/ssh/sshd_config | awk '{print $2}' | head -1`
-    while :; do echo
-      [ ${ARG_NUM} == 0 ] && read -e -p "Please input SSH port(Default: ${now_ssh_port}): " ssh_port
-      ssh_port=${ssh_port:-${now_ssh_port}}
-      if [ ${ssh_port} -eq 22 >/dev/null 2>&1 -o ${ssh_port} -gt 1024 >/dev/null 2>&1 -a ${ssh_port} -lt 65535 >/dev/null 2>&1 ]; then
-        break
-      else
-        echo "${CWARNING}input error! Input range: 22,1025~65534${CEND}"
-        exit 1
-      fi
-    done
-
-    if [ -z "`grep ^Port /etc/ssh/sshd_config`" -a "${ssh_port}" != '22' ]; then
-      sed -i "s@^#Port.*@&\nPort ${ssh_port}@" /etc/ssh/sshd_config
-    elif [ -n "`grep ^Port /etc/ssh/sshd_config`" ]; then
-      sed -i "s@^Port.*@Port ${ssh_port}@" /etc/ssh/sshd_config
-    fi
-  fi
-  # 检测防火墙
-  while :; do
-    read -e -p "是否需要开启防火墙? [是y/否n]: " iptables_flag
-    if [[ ! ${iptables_flag} =~ ^[y,n]$ ]]; then
-      echo -e "${CWARNING}输入错误! 请输入 'y' 或者 'n'${CEND}"
-      break
-    else
-      exit;
-    fi
-  done
-
-fi
-
 # 数据交换目录是否存在
 [ -d ${SHARE_DIR} ] && chmod 755 ${SHARE_DIR}
 

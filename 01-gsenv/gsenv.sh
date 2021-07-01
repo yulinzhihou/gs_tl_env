@@ -40,9 +40,9 @@ version() {
 download () {
   # wget -O ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz 
   # gs env 服务器环境 ，组件
-  wget -q https://gsgamesahre.com/gstl.tar.gz -O ${FILENAME}.tar.gz
+  wget -q https://gsgameshare.com/gstl.tar.gz -O ${FILENAME}.tar.gz
   # 解压目录
-  tar zxf ${FILENAME}.tar.gz && mv ${FILENAME} ${ENVDIR}
+  tar zxf ${FILENAME}.tar.gz && mv gs_tl_env ${ENVDIR}
 }
 
 show

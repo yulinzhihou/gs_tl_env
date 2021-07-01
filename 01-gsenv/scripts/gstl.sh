@@ -6,18 +6,7 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 安装天龙环境docker
 DOCKERNAME='gsdocker'
-GSDIR='~/.gs'
-if [ -e "~/.gs/.env" ]; then
-. ~/.gs/.env
-else
-    echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
-    exit 1;
-fi
-
-if [ -e "/usr/local/bin/color" ]; then
-. /usr/local/bin/color
-fi
-
+GSDIR='.gs'
 
 # 授权
 login(){
@@ -41,7 +30,8 @@ download() {
     # gs docker 镜像
     cd ~ && \
     wget -q https://gsgamesahre.com/${DOCKERNAME}.tar.gz -O ${DOCKERNAME} && \
-    tar zxf ${DOCKERNAME} && mv ${DOCKERNAME} ${GSDIR}
+    tar zxf ${DOCKERNAME} && mv ${DOCKERNAME} ${GSDIR} && \
+    cd ~/.gs && \cp -rf env-sample .env
 }
 
 # 配置容器启动的参数
@@ -218,5 +208,16 @@ docker_run() {
 }
 
 download
+if [ -e "~/.gs/.env" ]; then
+. ~/.gs/.env
+else
+    echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
+    exit 1;
+fi
+
+if [ -e "/usr/local/bin/color" ]; then
+. /usr/local/bin/color
+fi
+
 init_config
 docker_run
