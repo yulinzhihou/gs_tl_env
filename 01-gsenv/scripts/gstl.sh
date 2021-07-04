@@ -5,6 +5,9 @@
 # Date :  2021-06-30
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # 检测是不是root用户。不是则退出
+if [ -f /usr/local/bin/color ]; then
+    . /usr/local/bin/color
+fi
 [ $(id -u) != "0" ] && { echo "${CFAILURE}错误: 你必须使用ROOT用户${CEND}"; exit 1; }
 # comment: 安装天龙环境docker
 DOCKERNAME='gsdocker'
@@ -190,7 +193,7 @@ init_config(){
             fi
         done
     else 
-        echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
+        echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！"
         exit 1;
     fi
     
@@ -228,12 +231,8 @@ fi
 if [ -f ${WHOLE_PATH} ]; then
     . ${WHOLE_PATH}
 else 
-    echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
+    echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！"
     exit 1;
-fi
-
-if [ -f /usr/local/bin/color ]; then
-    . /usr/local/bin/color
 fi
 
 init_config
