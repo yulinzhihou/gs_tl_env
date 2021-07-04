@@ -106,12 +106,12 @@ set_timezone() {
 # 数据备份
 data_backup(){
     #备份数据库
-    crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"` | grep -v grep |wc -l`
+    crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "gs_mysql"` | grep -v grep |wc -l`
     if [ $crontabCount -eq 0 ];then
-        (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "tlmysql"``docker ps --format "{{.Names}}" | grep "tlmysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
+        (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gs_mysql"``docker ps --format "{{.Names}}" | grep "gs_mysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
     fi
 
-    docker cp ${GS_PROJECT}/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "tlmysql"`:/
+    docker cp ${GS_PROJECT}/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "gs_mysql"`:/
     docker exec -it gs_tlmysql_1 /bin/bash -c "chmod -R 777 /tlmysql_backup.sh"
 
     #备份服务端
