@@ -165,6 +165,7 @@ if [ -f ${WHOLE_PATH} ]; then
         break
         fi
     done
+    \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
 else 
     echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
     exit 1;

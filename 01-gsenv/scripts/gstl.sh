@@ -197,7 +197,7 @@ init_config(){
         echo -e "GS专用环境容器还没下载下来，请重新执行【$0】命令！"
         exit 1;
     fi
-    
+    \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
 }
 
 # 运行容器
