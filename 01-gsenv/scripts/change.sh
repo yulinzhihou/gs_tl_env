@@ -27,7 +27,7 @@ setini && \
 docker-compose up -d && \
 runtlbb
 if [ $? == 0 ]; then
-  echo -e "${CBLUE} 换端成功，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！${CEND}"
+  echo -e "${CSUCCESS} 换端成功，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！${CEND}"
 else
   echo -e "${CRED} 换端失败！请检查配置！${CEND}"
 fi

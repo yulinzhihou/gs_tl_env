@@ -107,7 +107,7 @@ set_command() {
 set_timezone() {
     echo -e "${CGREEN}开始设置时区 !!!${CEND}";
     rm -rf /etc/localtime
-    ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
+    ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
     # 复制一份到docker镜像里面。可以在制作docker镜像时添加
 }
 
@@ -146,7 +146,7 @@ do_install() {
 
 # 安装完成提示信息
 show_install_msg() {
-  printf "${CCYAN}}
+  printf "${CCYAN}
   #######################################################################
   #       GS_TL_Env 支持： CentOS/RedHat 7+  Ubuntu 18+ Debian 10+
   #       GS游享网 [https://gsgameshare.com] 专用环境安装成功!

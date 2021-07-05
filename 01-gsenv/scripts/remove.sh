@@ -37,7 +37,7 @@ while :; do echo
     fi
 
     if [ $? == 0 ]; then
-      echo -e "${CBLUE} 数据清除成功，请重新安装环境！！${CEND}"
+      echo -e "${CSUCCESS} 数据清除成功，请重新安装环境！！${CEND}"
     else
       echo -e "${CRED} 数据清除失败！可能需要重装系统或者环境了！${CEND}"
     fi

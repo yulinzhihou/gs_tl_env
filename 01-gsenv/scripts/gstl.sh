@@ -215,7 +215,7 @@ docker_run() {
     fi
     # 开始根据编排工具安装
     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
-    if [ $? -ne 0 ]; then
+    if [ $? -eq 0 ]; then
         echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
         rm -rf ${WHOLE_PATH}
         exit 1;

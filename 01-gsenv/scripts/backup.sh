@@ -42,7 +42,7 @@ fi
 tar zcf tlbb-${FILENAME}.tar.gz /tlgame/tlbb
 #判断是否备份成功
 if [ $? -eq 0 ]; then
-    echo -e "${CBLUE}`date '+%Y-%m-%d-%H-%M-%S'`\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}">>${FILEPATH}${LOG_FILE}
+    echo -e "${CSUCCESS}`date '+%Y-%m-%d-%H-%M-%S'`\ttlbb-${FILENAME}.tar.gz\t备份成功!!${CEND}">>${FILEPATH}${LOG_FILE}
 else
     echo -e "${CRED}`date '+%Y-%m-%d-%H-%M-%S'`\ttlbb-${FILENAME}.tar.gz\t备份失败${CEND}">>${FILEPATH}${LOG_FILE}
 fi

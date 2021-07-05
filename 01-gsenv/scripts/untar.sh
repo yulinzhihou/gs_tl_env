@@ -25,14 +25,14 @@ if [ -f "/root/tlbb.tar.gz" ]; then
     chown -R root:root /tlgame && \
     chmod -R 777 /tlgame && \
     mv  ~/tlbb.tar.gz  ~/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
-    echo -e "${CBLUE} 服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
+    echo -e "${CSUCCESS} 服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
 elif [ -f "/root/tlbb.zip" ]; then
     tar zcf tlgame-`date +%Y%m%d%H%I%S`${SUFFIX} ${TLBB_PATH} && \
     rm -rf ${TLBB_PATH}/tlbb && \
     unzip -q ~/tlbb.zip -d /tlgame/ && \
     chmod -R 777 /tlgame && \
     mv ~/tlbb.zip ~/`date +%Y%m%d%H%I%S`-tlbb.zip
-    echo -e "${CBLUE} 服务端文件 tlbb.zip 已经上传成功！！${CEND}"
+    echo -e "${CSUCCESS} 服务端文件 tlbb.zip 已经上传成功！！${CEND}"
 else
     echo -e "${CRED} 服务端文件不存在，或者位置上传错误，请上传至 [/root] 目录下面${CEND}"
 fi

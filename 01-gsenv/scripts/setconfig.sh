@@ -178,7 +178,7 @@ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 # 开环境
 cd ${GSDIR} && docker-compose up -d
 if [ $? == 0 ]; then
-  echo -e "${CBLUE} 配置写入成功！！${CEND}"
+  echo -e "${CSUCCESS} 配置写入成功！！${CEND}"
 else
   echo -e "${CRED} 配置写入失败，请移除环境重新安装！！${CEND}"
 fi

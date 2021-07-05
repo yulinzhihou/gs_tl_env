@@ -45,7 +45,7 @@ EOF
 
 # Set timezone
 rm -rf /etc/localtime
-ln -s /usr/share/zoneinfo/${timezone} /etc/localtime
+ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 # Set DNS
 #cat > /etc/resolv.conf << EOF

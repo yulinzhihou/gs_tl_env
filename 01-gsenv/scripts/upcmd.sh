@@ -42,7 +42,7 @@ download
 if [ $? == '0' ]; then
   set_command
   if [ $? == '0' ]; then
-    echo -e "${CBLUE} 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！${CEND}"
+    echo -e "${CSUCCESS} 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！${CEND}"
   else
     echo -e "${CRED} 命令重新生成失败，请联系作者，或者重装安装环境 ${CEND}"
   fi

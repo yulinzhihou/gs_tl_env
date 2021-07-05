@@ -25,7 +25,7 @@ while :; do echo
     done
     cd ${ROOT_PATH}/${GSDIR} && docker-compose restart
     if [ $? == 0 ]; then
-      echo -e "${CBLUE} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令 ${CEND}"
+      echo -e "${CSUCCESS} 服务端已经重启成功，如果需要重新开服，请运行【runtlbb】命令 ${CEND}"
     else
       echo -e "${CRED} 服务端已经重启失败！可能需要重装系统或者环境了！${CEND}"
     fi

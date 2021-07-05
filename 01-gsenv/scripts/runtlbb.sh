@@ -21,10 +21,10 @@ fi
 chmod -R 777 /tlgame && \
 chown -R root:root /tlgame && \
 cd ${ROOT_PATH}/${GSDIR} && \
-docker-compose exec -d gs_server /home/billing/billing up -d  && \
-docker-compose exec -d gs_server /bin/bash run.sh 
+docker-compose exec -d gsserver /home/billing/billing up -d  && \
+docker-compose exec -d gsserver /bin/bash run.sh 
 if [ $? -eq 0 ]; then
-  echo -e "${CBLUE} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
+  echo -e "${CSUCCESS} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
 else
   echo -e "${CRED} 启动服务端失败！${CEND}"
 fi

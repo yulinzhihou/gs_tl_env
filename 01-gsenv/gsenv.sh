@@ -15,10 +15,10 @@ CONFIG_FILE='.env'
 TMP_PATH='/opt'
 # 容器打包文件后缀
 SUFFIX='.tar.gz'
-# 容器完整包名称
-WHOLE_NAME=${FILENAME}${SUFFIX}
 #环境下载保存的文件名称
 FILENAME='gstlenv'
+# 容器完整包名称
+WHOLE_NAME=${FILENAME}${SUFFIX}
 #解压后重全名文件夹名称
 ENVDIR='.tlgame'
 #环境版本号

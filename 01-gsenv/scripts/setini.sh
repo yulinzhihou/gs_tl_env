@@ -42,7 +42,7 @@ fi
 
 
 if [ ${BILLING_PORT} != "21818" ]; then
-    sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/scripts/config.json
+    sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config.json
     sed -i "s/Port0=.*/Port0=${BILLING_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
@@ -65,7 +65,7 @@ cd ${BASE_PATH}/ && \
 rm -rf  ${BASE_PATH}/config/*.ini && \
 rm -rf  ${BASE_PATH}/config/config.json
 if [ $? == 0 ]; then
-  echo -e "${CBLUE} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
+  echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
 else
   echo -e "${CRED} 配置文件写入失败！${CEND}"
 fi

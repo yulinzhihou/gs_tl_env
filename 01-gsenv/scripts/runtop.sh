@@ -19,7 +19,6 @@ else
 fi
 
 if [ -n $1 ]; then
-    echo -e "${CBLUE} 命令重新生成成功，如果需要了解详情，可以运行 gs 命令进行帮助查询！！${CEND}"
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver top
 else
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 top

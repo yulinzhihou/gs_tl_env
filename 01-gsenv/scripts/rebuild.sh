@@ -25,7 +25,7 @@ while :; do echo
     done
     docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && rm -rf /tlgame/tlbb/* && cd ~/.tlgame && docker-compose up -d
     if [ $? == 0 ]; then
-      echo -e "${CBLUE} 环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！${CEND}"
+      echo -e "${CSUCCESS} 环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！${CEND}"
     else
       echo -e "${CRED} 环境已经重构失败！可能需要重装系统或者环境了！${CEND}"
     fi
