@@ -5,17 +5,24 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 换版本
+# 引入全局参数
+if [ -f ./.env ]; then
+  . /root/.gs/.env
+else
+  . /usr/local/bin/.env
+fi
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . /root/.tlgame/scripts/color.sh
+  . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
+
 docker stop $(docker ps -a -q) && \
 docker rm $(docker ps -a -q) && \
 rm -rf /tlgame/tlbb/* && \
 untar && \
-cd /root/.tlgame && \
+cd ${ROOT_PATH}/${GSDIR} && \
 setini && \
 docker-compose up -d && \
 runtlbb

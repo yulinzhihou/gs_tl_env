@@ -54,6 +54,7 @@ download() {
 
 # 配置容器启动的参数
 init_config(){
+    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
     if [ -f ${WHOLE_PATH} ]; then
         # 配置BILLING_PORT
         while :; do echo

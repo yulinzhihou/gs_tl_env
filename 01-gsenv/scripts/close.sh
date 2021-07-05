@@ -6,11 +6,19 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 一键命令关闭所有
 # 颜色代码
+# 引入全局参数
+if [ -f ./.env ]; then
+  . /root/.gs/.env
+else
+  . /usr/local/bin/.env
+fi
+# 颜色代码
 if [ -f ./color.sh ]; then
-  . /root/.tlgame/scripts/color.sh
+  . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
+
 cd ~/.tlgame && \
 docker-compose exec -d server /bin/bash stop.sh && \
 docker-compose exec -d server /home/billing/billing stop

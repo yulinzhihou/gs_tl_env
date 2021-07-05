@@ -5,9 +5,15 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 删除所有数据
+# 引入全局参数
+if [ -f ./.env ]; then
+  . /root/.gs/.env
+else
+  . /usr/local/bin/.env
+fi
 # 颜色代码
 if [ -f ./color.sh ]; then
-  . /root/.tlgame/scripts/color.sh
+  . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
@@ -17,12 +23,12 @@ while :; do echo
       sleep 1
       echo -ne "\r在准备正行清除操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
     done
-    if [ -e ~/.tlgame ]; then
+    if [ -e ${ROOT_PATH}/${GSDIR} ]; then
       docker stop $(docker ps -a -q) && \
       docker rm -f $(docker ps -a -q) && \
       docker rmi -f $(docker images -q) && \
       mv /tlgame  /tlgame-`date +%Y%m%d%H%I%S` && \
-      rm -rf ~/.tlgame
+      rm -rf ${ROOT_PATH}/${GSDIR}
     else
       docker stop $(docker ps -a -q) && \
       docker rm -f $(docker ps -a -q) && \

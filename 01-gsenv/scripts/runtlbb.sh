@@ -5,18 +5,25 @@
 # Date :  2021-02-01
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 一键开服，适合于那种可以一键开启的服务端，如果3-5分钟后，服务端没开启，则需要使用分步开服方式
+# 引入全局参数
+if [ -f ./.env ]; then
+  . /root/.gs/.env
+else
+  . /usr/local/bin/.env
+fi
+
 if [ -f ./color.sh ]; then
-  . /root/.tlgame/scripts/color.sh
+  . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
 
 chmod -R 777 /tlgame && \
 chown -R root:root /tlgame && \
-cd ~/.tlgame && \
-docker-compose exec -d server /home/billing/billing up -d  && \
-docker-compose exec -d server /bin/bash run.sh
-if [ $? == 0 ]; then
+cd ${ROOT_PATH}/${GSDIR} && \
+docker-compose exec -d gs_server /home/billing/billing up -d  && \
+docker-compose exec -d gs_server /bin/bash run.sh 
+if [ $? -eq 0 ]; then
   echo -e "${CBLUE} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
 else
   echo -e "${CRED} 启动服务端失败！${CEND}"

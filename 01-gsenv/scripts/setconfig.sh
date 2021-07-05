@@ -2,28 +2,32 @@
 # Author: yulinzhihou <yulinzhihou@gmail.com>
 # Forum:  https://gsgamesahre.com
 # Project: https://github.com/yulinzhihou/gs_tl_env.git
-# Date :  2021-02-01
+# Date :  2021-07-05
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 当用户需要重新生成数据库端口，密码时，则使用此命令进行重装写入配置，注意，执行完成后需要重启服务器再进行配置。否则需要使用 upenv.d 让数据临时生效
 # 修改billing参数
+# 引入全局参数
+if [ -f ./.env ]; then
+  . /root/.gs/.env
+else
+  . /usr/local/bin/.env
+fi
 # 颜色代码
-
-
 if [ -f ./color.sh ]; then
   . /root/.tlgame/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
 
-FILE_PATH="/root/.tlgame/"
+FILE_PATH="/root/.gs/"
 alias upenv="source /root/.tlgame/.env"
 
 if [ -e ${FILE_PATH} ]; then
   cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
 fi
 
-upenv
 if [ -f ${WHOLE_PATH} ]; then
+    echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
     # 配置BILLING_PORT
     while :; do echo
         read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
@@ -171,7 +175,7 @@ fi
 # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 # 开环境
-cd /root/.tlgame && docker-compose up -d
+cd ${GSDIR} && docker-compose up -d
 if [ $? == 0 ]; then
   echo -e "${CBLUE} 配置写入成功！！${CEND}"
 else
