@@ -12,15 +12,14 @@ if [ -f ./.env ]; then
 else
   . /usr/local/bin/.env
 fi
-# 颜色代码
+
 if [ -f ./color.sh ]; then
-  . /root/.tlgame/scripts/color.sh
+  . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
 
 FILE_PATH="/root/.gs/"
-alias upenv="source /root/.tlgame/.env"
 
 if [ -e ${FILE_PATH} ]; then
   cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
@@ -176,7 +175,7 @@ fi
 # 先停止容器，再将容器删除，重新根据镜像文件以及配置文件，通过docker-compose重新生成容器环境
 docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
 # 开环境
-cd ${GSDIR} && docker-compose up -d
+cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 配置写入成功！！${CEND}"
 else

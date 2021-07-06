@@ -19,11 +19,14 @@ else
   . /usr/local/bin/color
 fi
 
-cd ~/.tlgame && \
-docker-compose exec -d gsserver /bin/bash stop.sh && \
-docker-compose exec -d gsserver /home/billing/billing stop
-if [ $? == 0 ]; then
-  echo -e "${CSUCCESS} 服务端已经关闭成功，如果需要重新开启，请运行【runtlbb】命令${CEND}"
-else
-  echo -e "${CRED} 服务端已经关闭失败！请稍后再试！${CEND}"
+if [ -f ${ROOT_PATH}/${GSDIR} ];then 
+  cd ${ROOT_PATH}/${GSDIR} && \
+  docker-compose exec -d gsserver /bin/bash stop.sh && \
+  docker-compose exec -d gsserver /home/billing/billing stop
+  if [ $? == 0 ]; then
+    echo -e "${CSUCCESS} 服务端关闭成功，如果需要重新开启，请运行【runtlbb】命令${CEND}"
+  else
+    echo -e "${CRED} 服务端关闭失败！请稍后再试！${CEND}"
+  fi
 fi
+
