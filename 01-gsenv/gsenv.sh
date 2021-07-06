@@ -33,12 +33,14 @@ show() {
 }
 
 download () {
+  echo -e "${CGREEN}正在下载环境安装源码，此过程决定于网速，源码安装包大概 2MB 左右，请稍候……${CEND}"
   # wget -q ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${WHOLE_NAME}
   # gs env 服务器环境 ，组件
   wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
   cd ${TMP_PATH} && \
   # 解压目录
   tar zxf ${WHOLE_NAME} && mv ${FILENAME} ${ROOT_PATH}/${ENVDIR} && rm -rf ${TMP_PATH}/${WHOLE_NAME}
+  echo -e "${CGREEN}安装已经下载到本地并准备执行安装！请耐心等待！${CEND}"
 }
 
 show

@@ -75,7 +75,7 @@ EOF
   chmod +x /usr/local/bin/docker-compose
   docker-compose --version >& /dev/null
   if [ $? -eq 0 ]; then
-    echo -e "${CBLUE}docker-compose was installed !!!${CEND}";
+    echo -e "${CBLUE} docker-compose was installed !!! ${CEND}";
   fi
 }
 
@@ -91,18 +91,6 @@ set_command() {
     rm -rf /tmp/command.txt
 }
 
-# 启动环境
-# docker_run () {
-#     if [ ! -e ${OFFLINE_TAR} ]; then
-#       # 在线镜像拉取
-#       . ${GS_PROJECT}/.env
-#       cd ${GS_PROJECT} && docker-compose up -d
-#     else
-#       # 离线版本。暂时没做
-#       docker import /root/gs_tl_offline.tar.gz
-#     fi
-# }
-
 # 设置服务器时间
 set_timezone() {
     echo -e "${CGREEN}开始设置时区 !!!${CEND}";
@@ -110,25 +98,6 @@ set_timezone() {
     ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
     # 复制一份到docker镜像里面。可以在制作docker镜像时添加
 }
-
-# # 数据备份
-# data_backup(){
-#     echo -e "${CGREEN}开始设置数据备份 !!!${CEND}";
-#     #备份数据库
-#     crontabCount=`crontab -l | grep docker exec -it `docker ps --format "{{.Names}}" | grep "gs_mysql"` | grep -v grep |wc -l`
-#     if [ $crontabCount -eq 0 ];then
-#         (echo "0 */1 * * * sh docker exec -it `docker ps --format "{{.Names}}" | grep "gs_mysql"``docker ps --format "{{.Names}}" | grep "gs_mysql"` /bin/bash -c './tlmysql_backup.sh' > /dev/null 2>&1 &"; crontab -l) | crontab
-#     fi
-
-#     docker cp ${GS_PROJECT}/include/tlmysql_backup.sh `docker ps --format "{{.Names}}" | grep "gs_mysql"`:/
-#     docker exec -it gs_tlmysql_1 /bin/bash -c "chmod -R 777 /tlmysql_backup.sh"
-
-#     #备份服务端
-#     crontabCount=`crontab -l | grep `docker ps --format "{{.Names}}" | grep "server"` | grep -v grep |wc -l`
-#     if [ $crontabCount -eq 0 ];then
-#         (echo "0 */1 * * * sh  > /dev/null 2>&1 &"; crontab -l) | crontab
-#     fi
-# }
 
 # 安装整合
 do_install() {
@@ -138,10 +107,6 @@ do_install() {
   [ $? == 0 ] && echo -e "${CBLUE} docker_install success!! ${CEND}" || { echo -e "${CRED} docker_install failed!! ;${CEND}"; exit 1;}
   set_command
   [ $? == 0 ] && echo -e "${CBLUE} set_command success！${CEND}" || { echo -e "${CRED}  set_command failed ！！${CEND}"; exit 1;}
-  # docker_run
-  # [ $? == 0 ] && echo -e "${CBLUE} docker_run success！${CEND}" || { echo -e "${CRED}  docker_run failed ！！${CEND}"; exit 1;}
-  # data_backup
-  # [ $? == 0 ] && echo -e "${CBLUE} data_backup success！${CEND}" || { echo -e "${CRED}  data_backup failed ！！${CEND}"; exit 1;}
 }
 
 # 安装完成提示信息
@@ -153,7 +118,7 @@ show_install_msg() {
   #       安装环境需要移步论坛注册账号才能正常安装，只需要注册账号即可
   #       1.论坛客服QQ:\t1303588722
   #       2.论坛有对应的环境教程，有不懂的可以进论坛--原创教程
-  #       3.技术交流群:\t826717146
+  #       3.技术交流群:\t826717146,如果搜索不到群，请加客服QQ,备注进群即可
   #       4.环境还未安装完成，请手动执行 gstl
   #######################################################################
   ${CEND}"

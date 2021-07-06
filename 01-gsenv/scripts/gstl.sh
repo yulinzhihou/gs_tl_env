@@ -59,7 +59,7 @@ init_config(){
         # 配置BILLING_PORT
         while :; do echo
             read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
-            # IS_MODIFY=${IS_MODIFY:-'n'}
+            IS_MODIFY=${IS_MODIFY:-'n'}
             if [[ ! ${IS_MODIFY} =~ ^[y,n]$ ]]; then
                 echo "${CWARNING}输入错误! 请输入 'y' 或者 'n' ${CEND}"
             else
