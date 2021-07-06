@@ -49,7 +49,8 @@ download() {
     cd ${TMP_PATH} && \
     wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME} && \
     tar zxf ${WHOLE_NAME} && mv ${DOCKERNAME} ${ROOT_PATH}/${GSDIR} && \
-    cd ${ROOT_PATH}/${GSDIR} && \cp -rf env* .env && rm -rf ${TMP_PATH}/${WHOLE_NAME} 
+    chown -R root:root ${ROOT_PATH}/${GSDIR} && \
+    cd ${ROOT_PATH}/${GSDIR} && \cp -rf env.sample .env && rm -rf ${TMP_PATH}/${WHOLE_NAME} 
 }
 
 # 配置容器启动的参数

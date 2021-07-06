@@ -39,14 +39,17 @@ download () {
   wget -q https://gsgameshare.com/${WHOLE_NAME} -O ${TMP_PATH}/${WHOLE_NAME}
   cd ${TMP_PATH} && \
   # 解压目录
-  tar zxf ${WHOLE_NAME} && mv ${FILENAME} ${ROOT_PATH}/${ENVDIR} && rm -rf ${TMP_PATH}/${WHOLE_NAME}
+  tar zxf ${WHOLE_NAME} && mv ${FILENAME} ${ROOT_PATH}/${ENVDIR} && \
+  rm -rf ${TMP_PATH}/${WHOLE_NAME}
   echo -e "${CGREEN}安装已经下载到本地并准备执行安装！请耐心等待！${CEND}"
 }
 
 show
 download
 if [ -d ${ROOT_PATH}/${ENVDIR} ]; then
-    chmod -R 777 ${ROOT_PATH}/${ENVDIR}
-    \cp -rf ${ROOT_PATH}/${ENVDIR}/env.sample ${ROOT_PATH}/${ENVDIR}/${CONFIG_FILE}
-    cd ${ROOT_PATH}/${ENVDIR} && bash install.sh
+    chmod -R 777 ${ROOT_PATH}/${ENVDIR} && \
+    chown -R root:root ${ROOT_PATH}/${ENVDIR} && \
+    \cp -rf ${ROOT_PATH}/${ENVDIR}/env.sample ${ROOT_PATH}/${ENVDIR}/${CONFIG_FILE} && \
+    cd ${ROOT_PATH}/${ENVDIR} && \
+    bash install.sh
 fi

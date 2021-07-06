@@ -18,7 +18,7 @@ else
   . /usr/local/bin/color
 fi
 
-if [ $1 == "gsmysql" ] || [ $1 == "gsnginx" ]; then
+if [ $1 -eq "gsmysql" ] || [ $1 -eq "gsnginx" ]; then
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec $1 bash
 elif [ -z $1 ]; then
     cd ${ROOT_PATH}/${GSDIR} && docker-compose exec gsserver bash
