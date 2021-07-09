@@ -6,12 +6,12 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 解压tar.gz文件包到指定的目录，并给相应的权限
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env
 fi
-
+# 颜色代码
 if [ -f ./color.sh ]; then
   . ${GS_PROJECT}/scripts/color.sh
 else
@@ -21,10 +21,10 @@ fi
 if [ -f "/root/tlbb.tar.gz" ]; then
     tar zcf tlgame-`date +%Y%m%d%H%I%S`${SUFFIX} ${TLBB_PATH} && \
     rm -rf ${TLBB_PATH}/tlbb && \
-    tar zxf ~/tlbb.tar.gz -C /tlgame/ && \
+    tar zxf /root/tlbb.tar.gz -C /tlgame/ && \
     chown -R root:root /tlgame && \
     chmod -R 777 /tlgame && \
-    mv  ~/tlbb.tar.gz  ~/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
+    mv  /root/tlbb.tar.gz  /root/`date +%Y%m%d%H%I%S`-tlbb.tar.gz
     echo -e "${CSUCCESS} 服务端文件【tlbb.tar.gz】已经解压成功！！${CEND}"
 elif [ -f "/root/tlbb.zip" ]; then
     tar zcf tlgame-`date +%Y%m%d%H%I%S`${SUFFIX} ${TLBB_PATH} && \

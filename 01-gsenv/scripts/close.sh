@@ -7,7 +7,7 @@
 # comment: 一键命令关闭所有
 # 颜色代码
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env

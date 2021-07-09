@@ -7,12 +7,12 @@
 # comment: 当用户需要重新生成数据库端口，密码时，则使用此命令进行重装写入配置，注意，执行完成后需要重启服务器再进行配置。否则需要使用 upenv.d 让数据临时生效
 # 修改billing参数
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env
 fi
-
+# 颜色代码
 if [ -f ./color.sh ]; then
   . ${GS_PROJECT}/scripts/color.sh
 else
@@ -21,12 +21,13 @@ fi
 
 FILE_PATH="/root/.gs/"
 
-if [ -e ${FILE_PATH} ]; then
+if [ -e ${FILE_PATH} ] && [ ! -f ${FILE_PATH}.env ]; then
   cd ${FILE_PATH} && \cp -rf env.sample .env && source ${FILE_PATH}.env
 fi
 
 if [ -f ${WHOLE_PATH} ]; then
     echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
+    chattr -i ${WHOLE_PATH}
     # 配置BILLING_PORT
     while :; do echo
         read -e -p "当前【Billing验证端口】为：${CBLUE}[${BILLING_PORT}]${CEND}，是否需要修改【Billing验证端口】 [y/n](默认: n): " IS_MODIFY
@@ -165,6 +166,7 @@ if [ -f ${WHOLE_PATH} ]; then
         fi
     done
     \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
+    chattr +i ${WHOLE_PATH}
 else 
     echo -e "GS专用环境容器还没下载下来，请重新执行【gstl】命令！"
     exit 1;

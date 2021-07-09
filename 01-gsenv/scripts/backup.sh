@@ -7,7 +7,7 @@
 # comment: 备份数据库功能和打包服务端
 # 颜色代码
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env

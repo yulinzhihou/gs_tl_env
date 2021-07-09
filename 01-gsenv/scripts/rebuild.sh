@@ -6,7 +6,7 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 服务器环境重构，删除容器，重新启动
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env
@@ -26,7 +26,9 @@ while :; do echo
     docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && rm -rf /tlgame/tlbb/* && cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     if [ $? == 0 ]; then
       echo -e "${CSUCCESS} 环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！${CEND}"
+      exit 0;
     else
       echo -e "${CRED} 环境已经重构失败！可能需要重装系统或者环境了！${CEND}"
+      exit 1;
     fi
 done

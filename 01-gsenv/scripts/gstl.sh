@@ -56,6 +56,7 @@ download() {
 # 配置容器启动的参数
 init_config(){
     echo -e "${CYELLOW}即将设置服务器环境配置荐，请仔细！！${CEND}"
+    chattr -i ${WHOLE_PATH}
     if [ -f ${WHOLE_PATH} ]; then
         # 配置BILLING_PORT
         while :; do echo
@@ -199,6 +200,7 @@ init_config(){
         exit 1;
     fi
     \cp -rf ${WHOLE_PATH} /usr/local/bin/.env
+    chattr +i ${WHOLE_PATH}
 }
 
 # 运行容器
@@ -218,7 +220,6 @@ docker_run() {
     cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     if [ $? -eq 0 ]; then
         echo -e "${CBLUE}环境安装成功，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"
-        rm -rf ${WHOLE_PATH}
         exit 1;
     else
         echo -e "${CRED}环境安装失败，配置文件已经初始化。更多命令执行 【gs】查看${CEND}"

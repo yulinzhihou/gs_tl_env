@@ -7,7 +7,7 @@
 # comment: 根据env文件的环境变量，修改对应的配置文件，复制配置文件替换到指定目录，并给与相应权限
 # 颜色代码
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env
@@ -42,7 +42,7 @@ fi
 
 
 if [ ${BILLING_PORT} != "21818" ]; then
-    sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config.json
+    sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config/config.json
     sed -i "s/Port0=.*/Port0=${BILLING_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
@@ -63,7 +63,9 @@ docker cp ${BASE_PATH}/config/odbc.ini gsserver:/etc
 sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
 cd ${BASE_PATH}/ && \
 rm -rf  ${BASE_PATH}/config/*.ini && \
-rm -rf  ${BASE_PATH}/config/config.json
+rm -rf  ${BASE_PATH}/config/config.json && \
+rm -rf ${BASE_PATH}/config/billing
+
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 配置文件已经写入成功，可以执行【runtlbb】进行开服操作！！${CEND}"
 else

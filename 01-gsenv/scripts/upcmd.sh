@@ -6,17 +6,18 @@
 # Notes:  GS_TL_Env for CentOS/RedHat 7+ Debian 10+ and Ubuntu 18+
 # comment: 根据当前环境变量重新生成命令
 # 引入全局参数
-if [ -f ./.env ]; then
+if [ -f /root/.gs/.env ]; then
   . /root/.gs/.env
 else
   . /usr/local/bin/.env
 fi
-
+# 颜色代码
 if [ -f ./color.sh ]; then
   . ${GS_PROJECT}/scripts/color.sh
 else
   . /usr/local/bin/color
 fi
+
 # 更新命令
 download () {
   # wget -q ${FILENAME} https://gitee.com/yulinzhihou/gs_tl_env/repository/archive/${VERSION}.tar.gz  -O ${TMP_PATH}/${WHOLE_NAME}
