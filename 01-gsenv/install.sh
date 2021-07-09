@@ -128,9 +128,6 @@ show_install_msg() {
 }
 
 ##################################################################
-# 数据交换目录是否存在
-[ -d ${SHARE_DIR} ] && chmod -R 755 ${SHARE_DIR}
-
 # 调用系统组件
 sys_plugins_install
 clear

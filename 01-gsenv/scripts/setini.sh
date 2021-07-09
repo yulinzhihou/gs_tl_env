@@ -43,15 +43,15 @@ fi
 
 if [ ${BILLING_PORT} != "21818" ]; then
     sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config/config.json
-    sed -i "s/Port0=.*/Port0=${BILLING_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
+    sed -i "s/Port0=21818/Port0=${BILLING_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
 if [ "${LOGIN_PORT}" != "13580" ]; then
-    sed -i "s/Port0=.*/Port0=${LOGIN_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
+    sed -i "s/Port0=13580/Port0=${LOGIN_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
 if [ "${SERVER_PORT}" != "15680" ]; then
-    sed -i "s/Port0=.*/Port0=${SERVER_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
+    sed -i "s/Port0=15680/Port0=${SERVER_PORT}/g" ${BASE_PATH}/config/ServerInfo.ini
 fi
 
 #复制到已经修改好的文件到指定容器
