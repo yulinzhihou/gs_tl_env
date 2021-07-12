@@ -57,7 +57,7 @@ fi
 #复制到已经修改好的文件到指定容器
 \cp -rf ${BASE_PATH}/config/*.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
 \cp -rf ${BASE_PATH}/config/config.json ${GS_PROJECT_PATH}/billing/
-docker cp ${BASE_PATH}/config/odbc.ini gsserver:/etc
+docker cp ${BASE_PATH}/config/odbc.ini gs_gsserver_1:/etc
 #每次更新后，先重置更改过的文件
 #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
 sed -i 's/exit$/tail -f \/dev\/null/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
