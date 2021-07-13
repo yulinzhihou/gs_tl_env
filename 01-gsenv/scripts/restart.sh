@@ -20,8 +20,8 @@ fi
 
 while :; do echo
     for ((time = 10; time > 0; time--)); do
+      echo -ne "\r在准备正行重启操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\n"
       sleep 1
-      echo -ne "\r在准备正行重启操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
     done
     cd ${ROOT_PATH}/${GSDIR} && docker-compose restart
     if [ $? == 0 ]; then

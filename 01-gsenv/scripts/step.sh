@@ -21,7 +21,7 @@ fi
 echo -e "${CYYAN}使用此命令需要手动创建多窗口，点当前容器标签右键---克隆/复制容器---会基于当前容器创建一个全新的容器。每个容器输入一个命令，一共需要4个窗口${CEND}" 
 
 run_step_1() {
-  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec -d gsserver /bin/bash Server/shm stop && \
+  cd ${ROOT_PATH}/${GSDIR} && docker-compose exec -d gsserver ./Server/shm stop && \
   docker-compose exec -d gsserver /home/billing/billing up -d  && \
   docker-compose exec -d gsserver /bin/bash Server/shm start
 }
