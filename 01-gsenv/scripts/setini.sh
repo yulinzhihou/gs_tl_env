@@ -26,19 +26,15 @@ tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
 if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
     mkdir -p ${GS_PROJECT_PATH}/billing/ && chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
 fi
-\cp -rf ${BASE_PATH}/billing ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
+\cp -rf ${BASE_PATH}/billing ${GS_PROJECT_PATH}/billing/
 
 # 游戏配置文件
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
-    sed -i "s/DBPassword=.*/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/LoginInfo.ini
-    sed -i "s/DBPassword=.*/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/ShareMemInfo.ini
+    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/LoginInfo.ini
+    sed -i "s/DBPassword=123456/DBPassword=${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/ShareMemInfo.ini
     sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/odbc.ini
-fi
-
-if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
     sed -i "s/123456/${TL_MYSQL_PASSWORD}/g" ${BASE_PATH}/config.json
 fi
-
 
 if [ ${BILLING_PORT} != "21818" ]; then
     sed -i "s/21818/${BILLING_PORT}/g" ${BASE_PATH}/config.json
@@ -54,7 +50,8 @@ if [ "${SERVER_PORT}" != "15680" ]; then
 fi
 
 #复制到已经修改好的文件到指定容器
-\cp -rf ${BASE_PATH}/*.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
+\cp -rf ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
+\cp -rf ${BASE_PATH}/LoginInfo.ini ${BASE_PATH}/ShareMemInfo.ini ${BASE_PATH}/ServerInfo.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
 docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
 #每次更新后，先重置更改过的文件
 #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
