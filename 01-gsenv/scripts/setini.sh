@@ -23,11 +23,10 @@ BASE_PATH="/root/.tlgame/config"
 GS_PROJECT_PATH="/tlgame"
 
 tar zxf ${BASE_PATH}/ini.tar.gz -C ${BASE_PATH}
-tar zxf ${BASE_PATH}/billing.tar.gz -C ${BASE_PATH}
 if [ ! -d "${GS_PROJECT_PATH}/billing/" ]; then
     mkdir -p ${GS_PROJECT_PATH}/billing/ && chown -R root:root ${GS_PROJECT_PATH} && chmod -R 777 ${GS_PROJECT_PATH}
 fi
-tar zxf ${BASE_PATH}/billing.tar.gz -C ${GS_PROJECT_PATH}/billing/
+\cp -rf ${BASE_PATH}/billing ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
 
 # 游戏配置文件
 if [ "${TL_MYSQL_PASSWORD}" != "123456" ]; then
@@ -56,7 +55,6 @@ fi
 
 #复制到已经修改好的文件到指定容器
 \cp -rf ${BASE_PATH}/*.ini ${GS_PROJECT_PATH}/tlbb/Server/Config/
-\cp -rf ${BASE_PATH}/config.json ${GS_PROJECT_PATH}/billing/
 docker cp ${BASE_PATH}/odbc.ini gsserver:/etc
 #每次更新后，先重置更改过的文件
 #sed -i 's/^else$/else\n  \/home\/billing\/billing up -d/g' ${GS_PROJECT_PATH}/tlbb/run.sh && \
