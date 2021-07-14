@@ -21,8 +21,8 @@ fi
 chmod -R 777 /tlgame && \
 chown -R root:root /tlgame && \
 cd ${ROOT_PATH}/${GSDIR} && \
-docker-compose exec -d gsserver /home/billing/billing up -d && \
-docker-compose exec -d gsserver /bin/bash run.sh
+docker exec -d gsserver /home/billing/billing up -d && \
+docker exec -d gsserver /bin/bash run.sh
 if [ $? == 0 ]; then
   echo -e "${CSUCCESS} 已经成功启动服务端，请耐心等待几分钟后，建议使用：【runtop】查看开服的情况！！${CEND}"
 else

@@ -23,6 +23,7 @@ while :; do echo
       sleep 1
       echo -ne "\r在准备正行重构操作！！，剩余 ${CBLUE}$time${CEND} 秒，可以在计时结束前，按 CTRL+C 退出！\r"
     done
+    echo -ne "\n\r"
     docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && rm -rf /tlgame/tlbb/* && cd ${ROOT_PATH}/${GSDIR} && docker-compose up -d
     if [ $? == 0 ]; then
       echo -e "${CSUCCESS} 环境已经重构成功，请上传服务端到指定位置，然后再开服操作！！${CEND}"
